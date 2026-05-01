@@ -4,3 +4,12 @@ services:
       context: ./app
     ports:
       - "3000:3000"
+    volumes:
+      # Bind-mount your app source into the container — this is what enables hot reload
+      - ./app:/app
+      # Protect the container's node_modules from being overwritten by the host's
+      - /app/node_modules
+    environment:
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+
