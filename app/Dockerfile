@@ -1,23 +1,15 @@
-# Use official Node image
-FROM node:20-alpine
+FROM node:20
 
-# Working directory
 WORKDIR /app
 
-# Copy package files first
-COPY package*.json ./
+COPY package.json package-lock.json ./
+RUN npm ci
 
-# Install dependencies
-RUN npm install
-
-# Copy project files
 COPY . .
 
-# Build Next.js app
-RUN npm run build
+ENV WATCHPACK_POLLING=true
+ENV CHOKIDAR_USEPOLLING=true
 
-# Expose Next.js port
 EXPOSE 3000
 
-# Start production server
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
