@@ -1,5 +1,5 @@
 import "./globals.css";
-import HeadFrame from "../componenets/head_frame"
+import HeadFrame from "../components/head_frame"
 
 export default function RootLayout({
   children,

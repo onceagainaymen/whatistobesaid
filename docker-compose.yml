@@ -12,4 +12,4 @@ services:
     environment:
       - WATCHPACK_POLLING=true
       - CHOKIDAR_USEPOLLING=true
-
+    command: npm run dev -- --webpack
