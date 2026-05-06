@@ -10,7 +10,6 @@ export default function HeadFrame()
     <h1 className={`${melloida.className} text-4xl font-bold`}>
     WhatIsToBe<span className="text-gray-400">Said</span>
     </h1>
-    <p>0.1</p>
     </div>
 
     <div className="flex items-center gap-8 mr-3 ml-auto">

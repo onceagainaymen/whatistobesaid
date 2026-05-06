@@ -1,4 +1,4 @@
-import {maximo} from "../lib/fonts"
+import {roboto} from "../lib/fonts"
 
 export default function PostCard({date, title, content, image})
 {
@@ -14,7 +14,7 @@ export default function PostCard({date, title, content, image})
                />
          </figure>}
          <div className="px-6 py-5 text-left h-full">
-            {title && <h1 className={`text-[32px] font-bold mb-4`}>{title}</h1>}
+            {title && <h1 className={`${roboto.className} text-[32px] font-bold mb-4`}>{title}</h1>}
             <p className="text-xs mb-4 line-clamp-4">
             {content}
             </p>
