@@ -5,18 +5,18 @@ import {melloida} from "../lib/fonts"
 export default function HeadFrame()
 {
   return (
-    <header className="mb-4 border-b-2 h-24 flex items-center px-4">
+    <header className="border-b-2 h-24 flex items-center px-4">
     <div className="flex-1">
     <h1 className={`${melloida.className} text-4xl font-bold`}>
-    WhatIsToBe<span className="text-gray-400">Said</span>
+    <a href="/">WhatIsToBe<span className="text-gray-400">Said</span></a>
     </h1>
     </div>
 
     <div className="flex items-center gap-8 mr-3 ml-auto">
-    <ButtonSubmit text="Sign In">
+    <a href="/auth">
+    <ButtonSubmit text="signing">
     </ButtonSubmit>
-    <ButtonAlt text="Sign Up">
-    </ButtonAlt>
+    </a>
     </div>
     </header>
   )

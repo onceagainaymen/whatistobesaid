@@ -79,7 +79,7 @@ export default function PostCard({ date, title, content = "", image }: PostCardP
                   px-3 py-1
                   text-white text-[10px] font-black tracking-[0.2em] uppercase
                   transition-colors duration-150
-                  group-hover:bg-yellow-300 group-hover:text-black
+                  group-hover:bg-gray-400 group-hover:text-black
                 "
               >
                 <span>Read More</span>
