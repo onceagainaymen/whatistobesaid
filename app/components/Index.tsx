@@ -1,5 +1,7 @@
 "use client";
 
+import { motion, AnimatePresence } from "framer-motion"
+import PostPage from "./post_page"
 import { useState } from "react";
 import PostCard from "./post_card";
 
@@ -59,8 +61,22 @@ const posts: Post[] = [
 
 export default function Index() {
   const [expanded, setExpanded] = useState(true);
+  const [chosenPost, setChosenPost] = useState(null);
 
   return (
+    <div>
+
+    {!expanded && 
+    <AnimatePresence>
+    <motion.div
+    initial={{ opacity: 0, y: 24 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -24 }}
+    transition={{ duration: 0.4, ease: "easeOut" }}
+    >
+    <PostPage post={chosenPost}/>
+    </motion.div>
+    </AnimatePresence>}
     <section
       className={`
         fixed bottom-0 left-0 w-full overflow-hidden bg-white
@@ -88,12 +104,15 @@ export default function Index() {
       >
         <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-1">
           {posts.map((post) => (
-            <div key={post.id} className="mb-1 break-inside-avoid" onClick={() => setExpanded((prev) => !prev)}>
+            <div key={post.id} className="mb-1 break-inside-avoid" onClick={() => {setExpanded((prev) => !prev); 
+              setChosenPost(post)
+            }}>
               <PostCard date={post.date} title={post.title} content={post.content} image={post.image} />
             </div>
           ))}
         </div>
       </div>
     </section>
+    </div>
   );
 }

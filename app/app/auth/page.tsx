@@ -1,7 +1,7 @@
 "use client"
 import { motion, AnimatePresence } from "framer-motion"
-import SignUp from "../../components/sign-up"
-import SignIn from "../../components/sign-in"
+import SignUp from "../../components/sign_up"
+import SignIn from "../../components/sign_in"
 import {useState} from 'react'
 
 

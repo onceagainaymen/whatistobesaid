@@ -1,6 +1,4 @@
-"use client"
-import SignInComp from "./sign-in-comp"
-
+import SignUpComp from "./sign_up_comp"
 export default function SignIn({onSubmit}: {onSubmit: () => void})
 {
   return (
@@ -8,13 +6,14 @@ export default function SignIn({onSubmit}: {onSubmit: () => void})
       
       {/* Left: 1/3 */}
       <div className="w-1/2 flex items-center justify-center">
-      <SignInComp onSubmit={onSubmit}/>
+        <SignUpComp onSubmit={onSubmit}/>
       </div>
 
       {/* Right: 2/3 */}
-      <div className="w-1/2 h-full flex items-center justify-center">
-          <img src="/brutalism.jpeg" className="w-[97vh] h-full object-cover"/>
+      <div className="w-1/2 h-full flex items-center border-l-2 justify-center">
+          <img src="/rsdlp.jpeg" className="w-full h-full object-cover"/>
       </div>
+
     </div>
   )
 }
