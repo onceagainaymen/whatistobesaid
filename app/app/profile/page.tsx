@@ -1,4 +1,5 @@
 "use client"
+import ProfilePanel from "../../components/profile_panel"
 import PostGrid from "../../components/post_grid"
 const posts: Post[] = [
   { id: 1, title: "Pero", date: "5 May 2026", image: "/trot.jpeg", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." },
@@ -12,16 +13,34 @@ const posts: Post[] = [
   { id: 9, title: "Random", date: "3 May 2026", image: "/trot.jpeg", content: "some random thoughts jotted down late at night." },
   { id: 10, title: "Fragments", date: "28 April 2026", content: "incomplete ideas. half-formed sentences. posted anyway." },
 ];
-export default function Profile()
-{
+
+export default function Profile() {
   return (
-    <div className="grid grid-cols-3 gap-1 h-screen mt-4 mx-4" style={{ fontFamily: "'Courier New', Courier, monospace" }}>
-      <div className="grid justify-items-center content-start col-span-2 mb-6">
-        <h1 className="text-4xl font-bold"> POSTS BY $USER </h1>
+    <div
+      className="grid grid-cols-3 gap-4 mt-6 mx-4"
+      style={{ fontFamily: "'Courier New', Courier, monospace" }}
+    >
+      {/* Posts column */}
+      <div className="col-span-2 flex flex-col gap-4">
+        <h1
+          className="text-4xl font-black uppercase tracking-tight"
+          style={{ fontFamily: "'Arial Black', Impact, sans-serif" }}
+        >
+          Posts by <span className="text-black/30">@aymen</span>
+        </h1>
+        <div className="w-full h-[2px] bg-black" />
         <PostGrid posts={posts} onPostClick={(post) => console.log(post)} />
       </div>
-      <div className="border-1">
+
+      {/* Sticky profile column */}
+      <div className="sticky top-6 self-start">
+        <ProfilePanel
+          username="aymen"
+          bio="Writing about whatever. No particular order."
+          joinDate="May 2026"
+          postCount={posts.length}
+        />
       </div>
     </div>
-  )
+  );
 }
