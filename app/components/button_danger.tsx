@@ -1,12 +1,15 @@
-export default function ButtonDanger({text})
-{
+export default function ButtonDanger({ text }) {
   return (
     <button
-    className="h-12 border-black border-2 p-2.5 text-white bg-red-700 hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-red-400 transition duration-300">
-      <h3 className={`uppercase tracking-tight text-3xl font-bold`} style={{ fontFamily: "'Arial Black', 'Haettenschweiler', Impact, sans-serif" }}
->
-        {text}
-      </h3>
+      className="
+        bg-transparent border-none text-red-700/35 hover:text-red-700
+        border-b border-red-700/15 hover:border-red-700
+        pb-0.5 text-[11px] tracking-[0.12em] uppercase
+        transition-all duration-200
+      "
+      style={{ fontFamily: "'Courier New', Courier, monospace" }}
+    >
+      <h1 className="text-xl"> {text} </h1>
     </button>
-  )
+  );
 }

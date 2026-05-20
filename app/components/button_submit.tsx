@@ -1,14 +1,15 @@
-import {roboto} from "../lib/fonts"
-
-export default function ButtonSubmit({text})
-{
+export default function ButtonSubmit({ text }) {
   return (
     <button
-    className="h-20 border-black border-2 p-2.5 bg-[#FFFFFF] hover:bg-gray-300 hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-gray-400 transition duration-300">
-      <h3 className={`uppercase tracking-tight text-3xl font-bold`} style={{ fontFamily: "'Arial Black', 'Haettenschweiler', Impact, sans-serif" }}
->
-        {text}
-      </h3>
+      className="
+        bg-transparent border-none text-black/35 hover:text-black
+        border-b border-black/15 hover:border-black
+        pb-0.5 text-[11px] tracking-[0.12em] uppercase
+        transition-all duration-200
+      "
+      style={{ fontFamily: "'Courier New', Courier, monospace" }}
+    >
+      <h1 className="text-xl"> {text} </h1>
     </button>
-  )
+  );
 }

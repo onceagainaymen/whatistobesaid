@@ -1,4 +1,4 @@
-// components/ProfilePanel.tsx
+import ButtonAlt from './button_alt'
 
 type ProfilePanelProps = {
   username: string;
@@ -17,7 +17,7 @@ export default function ProfilePanel({
 }: ProfilePanelProps) {
   return (
     <div className="relative p-6" style={{ fontFamily: "'Courier New', Courier, monospace" }}>
-      <div className="relative border-2 border-black bg-white" style={{ boxShadow: "6px 6px 0px #000" }}>
+      <div className="relative border-2 border-black bg-white " style={{ boxShadow: "6px 6px 0px #000" }}>
 
         {/* Avatar */}
         <div className="border-b-2 border-black">
@@ -39,7 +39,6 @@ export default function ProfilePanel({
 
           {/* Username */}
           <p className="text-xl tracking-widest text-black/50 mb-4">@{username}</p>
-
           <div className="w-full h-[2px] bg-black mb-4" />
 
           {/* Bio */}
@@ -66,9 +65,11 @@ export default function ProfilePanel({
               <span className="text-xs tracking-widest uppercase text-black/50">Posts</span>
             </div>
           )}
-
         </div>
       </div>
-    </div>
+      <div className="mb-1 mt-3">
+      <ButtonAlt text="FOLLOW"/>
+      </div>
+      </div>
   );
 }
