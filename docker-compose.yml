@@ -13,3 +13,19 @@ services:
       - WATCHPACK_POLLING=true
       - CHOKIDAR_USEPOLLING=true
     command: npm run dev -- --webpack
+    depends_on:
+      - database
+
+  database:
+    build:
+      context: ./database
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./database:/database
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+
