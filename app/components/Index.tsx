@@ -1,5 +1,6 @@
 "use client";
 
+import ButtonAlt from './button_alt'
 import { motion, AnimatePresence } from "framer-motion"
 import PostPage from "./post_page"
 import { useState } from "react";
@@ -65,7 +66,6 @@ export default function Index() {
 
   return (
     <div>
-
     {!expanded && 
     <AnimatePresence>
     <motion.div
@@ -103,6 +103,9 @@ export default function Index() {
         `}
       >
         <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-1">
+        <div className="mb-1 break-inside-avoid border-black flex items-center justify-center" style={{ minHeight: "120px" }}>
+        <ButtonAlt text="Create yours" />
+        </div>
           {posts.map((post) => (
             <div key={post.id} className="mb-1 break-inside-avoid" onClick={() => {setExpanded((prev) => !prev); 
               setChosenPost(post)
