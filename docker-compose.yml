@@ -22,10 +22,21 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./database:/database
+      - db:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
 
+  nginx:
+    build:
+      context:
+        ./nginx
+    ports:
+       - "80:80"
+    depends_on:
+      - webapp
+
+volumes:
+  db:
