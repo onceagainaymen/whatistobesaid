@@ -1,28 +1,32 @@
 DOCKER=docker
-COMPOSE=compose
+COMPOSE=docker compose
 UP=up
 DOWN=down
 BUILD=up --build
 FREE=down -v
-STATUS=ps
+LIST=ps
+LOGS=logs -f
 
 all:
-	$(DOCKER) $(COMPOSE) $(UP)
+	$(COMPOSE) $(UP)
 
 build: 
-	$(DOCKER) $(COMPOSE) $(BUILD)
+	$(COMPOSE) $(BUILD)
 
 status:
-	$(DOCKER) $(COMPOSE) $(STATUS)
+	@$(COMPOSE) $(LOGS)
+
+list:
+	@$(COMPOSE) $(LIST) --format "{{.Names}} {{.Status}}"
 
 down:
-	$(DOCKER) $(COMPOSE) $(DOWN)
+	$(COMPOSE) $(DOWN)
 
 free:
-	$(DOCKER) $(COMPOSE) $(FREE)
+	$(COMPOSE) $(FREE)
 
 restart: free build
 
 nuke:
-	$(DOCKER) $(COMPOSE) $(FREE) --rmi all --remove-orphans
+	$(COMPOSE) $(FREE) --rmi all --remove-orphans
 	$(DOCKER) system prune -a --volumes -f

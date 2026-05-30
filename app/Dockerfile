@@ -12,4 +12,6 @@ ENV CHOKIDAR_USEPOLLING=true
 
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+RUN chmod +x ./init.sh
+
+CMD ["./init.sh"]
