@@ -5,19 +5,12 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      # Bind-mount your app source into the container — this is what enables hot reload
       - ./app:/app
-      # Protect the container's node_modules from being overwritten by the host's
       - /app/node_modules
     environment:
       WATCHPACK_POLLING: "true"
       CHOKIDAR_USEPOLLING: "true"
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
       DATABASE_URL: ${DATABASE_URL}
-    command: npm run dev -- --webpack
     depends_on:
       - database
 

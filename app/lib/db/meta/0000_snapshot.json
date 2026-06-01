@@ -1,0 +1,300 @@
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
+  "version": "5",
+  "dialect": "mysql",
+  "tables": {
+    "comments": {
+      "name": "comments",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "post_id": {
+          "autoincrement": false,
+          "name": "post_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "autoincrement": false,
+          "name": "content",
+          "type": "varchar(1500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score": {
+          "autoincrement": false,
+          "name": "score",
+          "type": "double",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "default": "(CURRENT_TIMESTAMP)",
+          "autoincrement": false,
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "comments_id": {
+          "name": "comments_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {
+        "post_id": {
+          "name": "post_id",
+          "columns": [
+            "post_id"
+          ],
+          "isUnique": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "columns": [
+            "user_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "comments_ibfk_1": {
+          "name": "comments_ibfk_1",
+          "tableFrom": "comments",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "comments_ibfk_2": {
+          "name": "comments_ibfk_2",
+          "tableFrom": "comments",
+          "tableTo": "posts",
+          "columnsFrom": [
+            "post_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "posts": {
+      "name": "posts",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "autoincrement": false,
+          "name": "title",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content": {
+          "autoincrement": false,
+          "name": "content",
+          "type": "varchar(1500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score": {
+          "autoincrement": false,
+          "name": "score",
+          "type": "double",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "default": "(CURRENT_TIMESTAMP)",
+          "autoincrement": false,
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "posts_id": {
+          "name": "posts_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {
+        "user_id": {
+          "name": "user_id",
+          "columns": [
+            "user_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "posts_ibfk_1": {
+          "name": "posts_ibfk_1",
+          "tableFrom": "posts",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "users": {
+      "name": "users",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "username": {
+          "autoincrement": false,
+          "name": "username",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "autoincrement": false,
+          "name": "email",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bio": {
+          "autoincrement": false,
+          "name": "bio",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "password_hash": {
+          "autoincrement": false,
+          "name": "password_hash",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "default": "(CURRENT_TIMESTAMP)",
+          "autoincrement": false,
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "users_id": {
+          "name": "users_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "email": {
+          "name": "email",
+          "columns": [
+            "email"
+          ]
+        },
+        "username": {
+          "name": "username",
+          "columns": [
+            "username"
+          ]
+        }
+      }
+    }
+  },
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "tables": {
+      "comments": {
+        "columns": {
+          "created_at": {
+            "isDefaultAnExpression": true
+          }
+        }
+      },
+      "posts": {
+        "columns": {
+          "created_at": {
+            "isDefaultAnExpression": true
+          }
+        }
+      },
+      "users": {
+        "columns": {
+          "created_at": {
+            "isDefaultAnExpression": true
+          }
+        }
+      }
+    },
+    "indexes": {}
+  }
+}
