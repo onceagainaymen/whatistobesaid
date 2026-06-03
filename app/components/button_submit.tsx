@@ -1,6 +1,6 @@
 export default function ButtonSubmit({ text }) {
   return (
-    <button
+    <div
       className="
         bg-transparent border-none text-black/35 hover:text-black
         border-b border-black/15 hover:border-black
@@ -10,6 +10,6 @@ export default function ButtonSubmit({ text }) {
       style={{ fontFamily: "'Courier New', Courier, monospace" }}
     >
       <h1 className="text-xl"> {text} </h1>
-    </button>
+    </div>
   );
 }

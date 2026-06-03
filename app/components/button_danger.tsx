@@ -1,6 +1,6 @@
 export default function ButtonDanger({ text }) {
   return (
-    <button
+    <div
       className="
         bg-transparent border-none text-red-700/35 hover:text-red-700
         border-b border-red-700/15 hover:border-red-700
@@ -10,6 +10,6 @@ export default function ButtonDanger({ text }) {
       style={{ fontFamily: "'Courier New', Courier, monospace" }}
     >
       <h1 className="text-xl"> {text} </h1>
-    </button>
+    </div>
   );
 }
