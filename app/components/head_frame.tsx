@@ -29,18 +29,20 @@ export default async function HeadFrame() {
             <a href="/auth">
               <ButtonSubmit text="signing"></ButtonSubmit>
             </a>
-            <p>|</p>
-            <a href="/profile">
-              <ButtonSubmit text="profile"></ButtonSubmit>
-            </a>
           </>
         )}
         {session !== null && (
-          <form action={handleLogout}>
-            <button type="submit">
-              <ButtonDanger text="log out"></ButtonDanger>
-            </button>
-          </form>
+          <>
+            <a href={`/profile/${session.username}`}>
+              <ButtonSubmit text="profile"></ButtonSubmit>
+            </a>
+            <p>|</p>
+            <form action={handleLogout}>
+              <button type="submit">
+                <ButtonDanger text="log out"></ButtonDanger>
+              </button>
+            </form>
+          </>
         )}
       </div>
     </header>

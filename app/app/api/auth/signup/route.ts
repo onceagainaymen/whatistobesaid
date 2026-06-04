@@ -45,7 +45,6 @@ export async function POST(req: NextRequest) {
     });
 
     const res = NextResponse.json({ ok: true }, { status: 201 });
-    res.cookies.set(sessionCookie(token));
     return res;
   } catch (e) {
     console.error(e);

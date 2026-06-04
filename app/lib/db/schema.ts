@@ -1,11 +1,12 @@
-import { mysqlTable, mysqlSchema, AnyMySqlColumn, index, foreignKey, primaryKey, int, varchar, double, timestamp, unique } from "drizzle-orm/mysql-core"
+import { mysqlTable, mysqlSchema, AnyMySqlColumn, index, foreignKey, primaryKey, int, varchar, double, timestamp, unique, text, mysqlEnum } from "drizzle-orm/mysql-core"
 import { sql } from "drizzle-orm"
 
 export const comments = mysqlTable("comments", {
 	id: int("id").autoincrement().notNull(),
 	user_id: int("user_id").notNull().references(() => users.id),
 	post_id: int("post_id").notNull().references(() => posts.id),
-	content: varchar("content", { length: 1500 }),
+	content: varchar("content", { length: 1500 }).notNull(),
+	like_count: int("like_count").default(0).notNull(),
 	score: double("score"),
 	created_at: timestamp("created_at", { mode: 'string' }).defaultNow(),
 },
@@ -17,13 +18,33 @@ export const comments = mysqlTable("comments", {
 	}
 });
 
+export const likes = mysqlTable("likes", {
+	id: int("id").autoincrement().notNull(),
+	user_id: int("user_id").notNull().references(() => users.id),
+	post_id: int("post_id").references(() => posts.id),
+	comment_id: int("comment_id").references(() => comments.id),
+	created_at: timestamp("created_at", { mode: 'string' }).defaultNow(),
+},
+(table) => {
+	return {
+		comment_id: index("comment_id").on(table.comment_id),
+		post_id: index("post_id").on(table.post_id),
+		likes_id: primaryKey({ columns: [table.id], name: "likes_id"}),
+		one_like_per_comment: unique("one_like_per_comment").on(table.user_id, table.comment_id),
+		one_like_per_post: unique("one_like_per_post").on(table.user_id, table.post_id),
+	}
+});
+
 export const posts = mysqlTable("posts", {
 	id: int("id").autoincrement().notNull(),
 	user_id: int("user_id").notNull().references(() => users.id),
-	title: varchar("title", { length: 100 }),
-	content: varchar("content", { length: 1500 }),
+	title: varchar("title", { length: 200 }).notNull(),
+	content: text("content"),
+	status: mysqlEnum("status", ['draft','published']).default('draft').notNull(),
+	like_count: int("like_count").default(0).notNull(),
 	score: double("score"),
 	created_at: timestamp("created_at", { mode: 'string' }).defaultNow(),
+	updated_at: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow(),
 },
 (table) => {
 	return {
@@ -34,10 +55,11 @@ export const posts = mysqlTable("posts", {
 
 export const users = mysqlTable("users", {
 	id: int("id").autoincrement().notNull(),
-	username: varchar("username", { length: 100 }),
+	username: varchar("username", { length: 100 }).notNull(),
 	name: varchar("name", { length: 100 }),
-	email: varchar("email", { length: 100 }),
+	email: varchar("email", { length: 100 }).notNull(),
 	bio: varchar("bio", { length: 500 }),
+	avatar: varchar("avatar", { length: 500 }),
 	password_hash: varchar("password_hash", { length: 255 }).notNull(),
 	created_at: timestamp("created_at", { mode: 'string' }).defaultNow(),
 },

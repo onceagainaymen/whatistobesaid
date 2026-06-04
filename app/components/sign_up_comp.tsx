@@ -12,20 +12,23 @@ export default function SignUpComp({ onSubmit }: { onSubmit: () => void }) {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [created, setCreated] = useState(false);
 
   async function handleSubmit() {
     setError("");
     setLoading(true);
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
     const res = await fetch("/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
-    console.log(JSON.stringify(form));
     const data = await res.json();
     setLoading(false);
     if (!res.ok) return setError(data.error);
-    window.location.href = "/";
+    setCreated(true);
+    await sleep(2000);
+    onSubmit();
   }
 
   return (
@@ -87,6 +90,13 @@ export default function SignUpComp({ onSubmit }: { onSubmit: () => void }) {
         <button className="cursor-pointer" onClick={onSubmit}>
           <p>already have an account?</p>
         </button>
+        {created && (
+          <>
+            <p className="text-green-500 text-xs mt-3">
+              Account created successfully!
+            </p>
+          </>
+        )}
       </div>
     </div>
   );
