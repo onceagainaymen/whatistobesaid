@@ -6,6 +6,7 @@ export default function ButtonDanger({ text }) {
         border-b border-red-700/15 hover:border-red-700
         pb-0.5 text-[11px] tracking-[0.12em] uppercase
         transition-all duration-200
+        w-fit text-center
       "
       style={{ fontFamily: "'Courier New', Courier, monospace" }}
     >

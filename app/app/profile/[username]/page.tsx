@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
-import * as schema from "../../../lib/db";
-import { db } from "../../../lib/db";
+import * as schema from "@/lib/db";
+import { db } from "@/lib/db";
 import ProfilePanel from "../../../components/profile_panel";
 import PostGrid from "../../../components/post_grid";
 const posts: Post[] = [

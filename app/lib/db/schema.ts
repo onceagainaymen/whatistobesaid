@@ -12,8 +12,8 @@ export const comments = mysqlTable("comments", {
 },
 (table) => {
 	return {
-		post_id: index("post_id").on(table.post_id),
 		user_id: index("user_id").on(table.user_id),
+		post_id: index("post_id").on(table.post_id),
 		comments_id: primaryKey({ columns: [table.id], name: "comments_id"}),
 	}
 });
@@ -27,11 +27,11 @@ export const likes = mysqlTable("likes", {
 },
 (table) => {
 	return {
-		comment_id: index("comment_id").on(table.comment_id),
 		post_id: index("post_id").on(table.post_id),
+		comment_id: index("comment_id").on(table.comment_id),
 		likes_id: primaryKey({ columns: [table.id], name: "likes_id"}),
-		one_like_per_comment: unique("one_like_per_comment").on(table.user_id, table.comment_id),
 		one_like_per_post: unique("one_like_per_post").on(table.user_id, table.post_id),
+		one_like_per_comment: unique("one_like_per_comment").on(table.user_id, table.comment_id),
 	}
 });
 
@@ -66,7 +66,7 @@ export const users = mysqlTable("users", {
 (table) => {
 	return {
 		users_id: primaryKey({ columns: [table.id], name: "users_id"}),
-		email: unique("email").on(table.email),
 		username: unique("username").on(table.username),
+		email: unique("email").on(table.email),
 	}
 });
