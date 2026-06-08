@@ -6,7 +6,7 @@ export default async function Home() {
   const session = await getSession();
   return (
     <div>
-      {session !== null && <Index />}
+      {session !== null && <Index session={session} />}
       {session === null && <HomePage />}
     </div>
   );
