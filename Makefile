@@ -24,9 +24,11 @@ down:
 
 free:
 	$(COMPOSE) $(FREE)
+	rm -rf ./app/public/uploads/*
 
 restart: free build
 
 nuke:
 	$(COMPOSE) $(FREE) --rmi all --remove-orphans
 	$(DOCKER) system prune -a --volumes -f
+	rm -rf ./app/public/uploads/*

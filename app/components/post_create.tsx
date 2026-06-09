@@ -5,17 +5,36 @@ import { useState } from "react";
 export default function PostCreate({ session }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  function handleImage(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImage(file);
+    setPreview(URL.createObjectURL(file));
+  }
+
+  function removeImage() {
+    setImage(null);
+    setPreview(null);
+  }
 
   async function handleSubmit(status: "draft" | "published") {
     setError("");
     setLoading(true);
 
+    const formData = new FormData();
+    formData.append("id", session.id);
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("status", status);
+    if (image) formData.append("image", image);
     const res = await fetch("/api/posts", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: session.id, title, content, status }),
+      body: formData,
     });
 
     const data = await res.json();
@@ -64,7 +83,7 @@ export default function PostCreate({ session }) {
               />
             </div>
 
-            <div className="flex flex-col gap-1 pt-6">
+            <div className="flex flex-col gap-1 py-6">
               <label
                 className="text-[9px] tracking-[0.2em] uppercase text-black/40"
                 style={{ fontFamily: "'Courier New', Courier, monospace" }}
@@ -79,6 +98,60 @@ export default function PostCreate({ session }) {
                 className="bg-transparent outline-none resize-none text-sm leading-relaxed placeholder:text-black/20"
                 style={{ fontFamily: "'Courier New', Courier, monospace" }}
               />
+            </div>
+
+            {/* Image upload */}
+            <div className="flex flex-col gap-3 pt-6">
+              <label
+                className="text-[9px] tracking-[0.2em] uppercase text-black/40"
+                style={{ fontFamily: "'Courier New', Courier, monospace" }}
+              >
+                Image
+              </label>
+
+              {preview ? (
+                <div className="relative border-2 border-black">
+                  <img
+                    src={preview}
+                    alt="preview"
+                    className="w-full object-cover max-h-64"
+                  />
+                  <button
+                    onClick={removeImage}
+                    className="absolute top-2 right-2 bg-black text-white text-[9px] font-black tracking-[0.2em] uppercase px-3 py-1 hover:bg-red-700 transition-colors duration-150"
+                    style={{ fontFamily: "'Courier New', Courier, monospace" }}
+                  >
+                    Remove ✕
+                  </button>
+                </div>
+              ) : (
+                <label className="cursor-pointer">
+                  <div className="border-2 border-dashed border-black/30 hover:border-black flex flex-col items-center justify-center py-10 gap-2 transition-colors duration-150">
+                    <span
+                      className="text-3xl font-black text-black/20"
+                      style={{
+                        fontFamily: "'Arial Black', Impact, sans-serif",
+                      }}
+                    >
+                      +
+                    </span>
+                    <span
+                      className="text-[9px] tracking-[0.2em] uppercase text-black/30"
+                      style={{
+                        fontFamily: "'Courier New', Courier, monospace",
+                      }}
+                    >
+                      Click to upload
+                    </span>
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImage}
+                    className="hidden"
+                  />
+                </label>
+              )}
             </div>
           </div>
 

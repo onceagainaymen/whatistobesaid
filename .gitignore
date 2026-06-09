@@ -1,3 +1,4 @@
 .env
 
 /generated/prisma
+/app/public/uploads/*

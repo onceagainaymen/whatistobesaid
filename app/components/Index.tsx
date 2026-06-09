@@ -92,7 +92,7 @@ export default function Index({ session }) {
   const [page, setPage] = useState(E.POST);
 
   return (
-    <div>
+    <div style={{ paddingBottom: expanded ? "80vh" : "4rem" }}>
       {!expanded && (
         <AnimatePresence>
           <motion.div
@@ -108,7 +108,7 @@ export default function Index({ session }) {
       )}
       <section
         className={`
-        fixed bottom-0 left-0 w-full overflow-hidden bg-white
+        mt-10 fixed bottom-0 left-0 w-full overflow-hidden bg-white
         transition-[height] duration-700 ease-in-out
         ${expanded ? "h-[80vh]" : "h-16"}
       `}

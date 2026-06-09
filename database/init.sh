@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS posts (
     title VARCHAR(200) NOT NULL,
     content TEXT,
     status ENUM('draft', 'published') DEFAULT 'draft' NOT NULL,
+    image_path VARCHAR(200),
     like_count INT DEFAULT 0 NOT NULL,
     score DOUBLE DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

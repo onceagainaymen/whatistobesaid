@@ -1,20 +1,42 @@
 import { db } from "@/lib/db";
 import { posts } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import { writeFile } from "fs/promises";
 
 export async function POST(req: NextRequest) {
   try {
-    const { id, title, content, status } = await req.json();
-    if (!title || !content) {
+    const formData = await req.formData();
+    const id = Number(formData.get("id"));
+    const title = formData.get("title") as string;
+    const content = formData.get("content") as string;
+    const status = formData.get("status") as "draft" | "published";
+    const image = formData.get("image") as File | null;
+
+    if (!title) {
       return NextResponse.json(
-        { error: "Fields cannot be empty." },
+        { error: "Title is required." },
         { status: 400 },
       );
     }
-    const res = await db
-      .insert(posts)
-      .values({ title: title, content: content, status: status, user_id: id });
+
+    let imagePath = null;
+    if (image && image.size > 0) {
+      const bytes = await image.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const filename = `${crypto.randomUUID()}-${path.extname(image.name)}`;
+      const filepath = path.join(process.cwd(), "public", "uploads", filename);
+      await writeFile(filepath, buffer);
+      imagePath = `/uploads/${filename}`;
+    }
+
+    const res = await db.insert(posts).values({
+      title: title,
+      content: content,
+      status: status,
+      user_id: id,
+      image_path: imagePath,
+    });
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch (e) {
     console.error(e);

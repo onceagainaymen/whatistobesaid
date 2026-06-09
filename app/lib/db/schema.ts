@@ -41,6 +41,7 @@ export const posts = mysqlTable("posts", {
 	title: varchar("title", { length: 200 }).notNull(),
 	content: text("content"),
 	status: mysqlEnum("status", ['draft','published']).default('draft').notNull(),
+	image_path: varchar("image_path", { length: 200 }),
 	like_count: int("like_count").default(0).notNull(),
 	score: double("score"),
 	created_at: timestamp("created_at", { mode: 'string' }).defaultNow(),
