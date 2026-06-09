@@ -12,6 +12,7 @@ services:
       CHOKIDAR_USEPOLLING: "true"
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
+      URL: ${URL}
     depends_on:
       - database
 

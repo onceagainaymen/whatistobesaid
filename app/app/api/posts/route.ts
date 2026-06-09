@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { posts } from "@/lib/db/schema";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
-import { writeFile } from "fs/promises";
+import { writeFile, mkdir } from "fs/promises";
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,7 +25,15 @@ export async function POST(req: NextRequest) {
       const bytes = await image.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const filename = `${crypto.randomUUID()}-${path.extname(image.name)}`;
-      const filepath = path.join(process.cwd(), "public", "uploads", filename);
+      const filepath = path.join(
+        process.cwd(),
+        "public",
+        "uploads",
+        filename,
+      );
+      await mkdir(path.join(process.cwd(), "public", "uploads"), {
+        recursive: true,
+      });
       await writeFile(filepath, buffer);
       imagePath = `/uploads/${filename}`;
     }

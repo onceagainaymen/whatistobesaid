@@ -30,7 +30,7 @@ export default function PostGrid({ posts, onPostClick }: PostGridProps) {
             date={post.date}
             title={post.title}
             content={post.content}
-            image={post.image}
+            image={post.image_path}
           />
         </div>
       ))}
