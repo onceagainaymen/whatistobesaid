@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
+import { validatePassword } from "@/utils/validation";
 import { eq, or } from "drizzle-orm";
 import { signToken, sessionCookie } from "@/lib/auth";
 
@@ -14,6 +15,12 @@ export async function POST(req: NextRequest) {
         { error: "Username, email and password are required." },
         { status: 400 },
       );
+    }
+
+    const vresult = validatePassword(password);
+
+    if (!vresult.isValid) {
+      return NextResponse.json({ error: vresult.error }, { status: 400 });
     }
 
     const existing = await db

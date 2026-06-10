@@ -25,12 +25,7 @@ export async function POST(req: NextRequest) {
       const bytes = await image.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const filename = `${crypto.randomUUID()}-${path.extname(image.name)}`;
-      const filepath = path.join(
-        process.cwd(),
-        "public",
-        "uploads",
-        filename,
-      );
+      const filepath = path.join(process.cwd(), "public", "uploads", filename);
       await mkdir(path.join(process.cwd(), "public", "uploads"), {
         recursive: true,
       });
@@ -46,6 +41,20 @@ export async function POST(req: NextRequest) {
       image_path: imagePath,
     });
     return NextResponse.json({ ok: true }, { status: 200 });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json(
+      { error: "Internal server error." },
+      { status: 500 },
+    );
+  }
+}
+
+// THE INDEX ALGORITHM
+export async function GET(req: NextRequest) {
+  try {
+    const result = await db.select().from(posts);
+    return NextResponse.json({ result }, { status: 200 });
   } catch (e) {
     console.error(e);
     return NextResponse.json(

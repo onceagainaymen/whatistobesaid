@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import { validatePassword } from "@/utils/validation";
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,6 +19,10 @@ export async function POST(req: NextRequest) {
         { error: "Passwords don't match" },
         { status: 400 },
       );
+    }
+    const vresult = validatePassword(newPassword);
+    if (!vresult.isValid) {
+      return NextResponse.json({ error: vresult.error }, { status: 400 });
     }
     const fetched_password = await db
       .select({ password_hash: users.password_hash })
