@@ -3,6 +3,7 @@ import * as schema from "@/lib/db";
 import { db } from "@/lib/db";
 import ProfilePanel from "../../../components/profile_panel";
 import PostGrid from "../../../components/post_grid";
+import { getSession } from "@/lib/auth";
 
 export default async function Profile({
   params,
@@ -10,6 +11,7 @@ export default async function Profile({
   params: Promise<{ username: string }>;
 }) {
   const { username } = await params;
+  const session = await getSession();
   const thisUser = await db
     .select()
     .from(schema.users)
@@ -42,10 +44,12 @@ export default async function Profile({
       {/* Sticky profile column */}
       <div className="sticky top-6 self-start">
         <ProfilePanel
+          id={thisUser[0].id}
           username={thisUser[0].username}
           bio={thisUser[0].bio}
           joinDate={thisUser[0].created_at.split(" ")[0]}
           postCount={posts.length}
+          session={session}
         />
       </div>
     </div>

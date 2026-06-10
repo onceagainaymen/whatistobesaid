@@ -1,21 +1,16 @@
 import ButtonAlt from "./button_alt";
 import { BiSolidCog } from "react-icons/bi";
 
-type ProfilePanelProps = {
-  username: string;
-  bio?: string;
-  joinDate?: string;
-  postCount?: number;
-  avatar?: string;
-};
-
 export default function ProfilePanel({
+  id,
   username,
   bio,
   joinDate,
   postCount,
   avatar,
-}: ProfilePanelProps) {
+  session,
+}) {
+  const personal = id === session.id ? true : false;
   return (
     <div
       className="relative p-6"
@@ -82,20 +77,23 @@ export default function ProfilePanel({
                   Posts
                 </span>
               </div>
-
-              <a className="border border-black/20 px-2 py-1" href="/account">
-                <span className="flex items-center gap-2">
-                  Account
-                  <BiSolidCog size={20} />
-                </span>
-              </a>
+              {personal && (
+                <a className="border border-black/20 px-2 py-1" href="/account">
+                  <span className="flex items-center gap-2">
+                    Account
+                    <BiSolidCog size={20} />
+                  </span>
+                </a>
+              )}
             </div>
           )}
         </div>
       </div>
-      <div className="mb-1 mt-3">
-        <ButtonAlt text="FOLLOW" />
-      </div>
+      {!personal && (
+        <div className="mb-1 mt-3">
+          <ButtonAlt text="FOLLOW" />
+        </div>
+      )}
     </div>
   );
 }
