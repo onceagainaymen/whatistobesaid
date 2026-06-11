@@ -26,7 +26,6 @@ export default function Index({ session }) {
       setLoading(false);
     })();
   }, []);
-  console.log(posts[0]);
   return (
     <div style={{ paddingBottom: expanded ? "80vh" : "4rem" }}>
       {!expanded && (
@@ -93,12 +92,7 @@ export default function Index({ session }) {
                     setChosenPost(post);
                   }}
                 >
-                  <PostCard
-                    date={post.date}
-                    title={post.title}
-                    content={post.content}
-                    image={post.image}
-                  />
+                  <PostCard post={post} />
                 </div>
               ))}
             </div>

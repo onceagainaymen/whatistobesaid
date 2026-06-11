@@ -18,6 +18,8 @@ type PostGridProps = {
 };
 
 export default function PostGrid({ posts, onPostClick }: PostGridProps) {
+  console.log("Lookie here");
+  console.log(posts[0]);
   return (
     <div className="columns-2 sm:columns-3 gap-1 w-full">
       {posts.map((post) => (
@@ -26,12 +28,7 @@ export default function PostGrid({ posts, onPostClick }: PostGridProps) {
           className="mb-1 break-inside-avoid"
           onClick={() => onPostClick?.(post)}
         >
-          <PostCard
-            date={post.date}
-            title={post.title}
-            content={post.content}
-            image={post.image_path}
-          />
+          <PostCard post={post} />
         </div>
       ))}
     </div>
