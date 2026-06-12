@@ -1,18 +1,41 @@
 import { verifyToken } from "@/lib/auth";
 import { comments } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
+import { likes } from "@/lib/db/schema";
+import { eq, and, count, desc, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ post_id: string }> },
 ) {
   try {
     const { post_id } = await params;
+    const token = req.cookies.get("session")?.value;
+    let user_id = null;
+    if (token) {
+      const payload = await verifyToken(token);
+      user_id = payload?.id;
+    }
+
     const res = await db
-      .select()
+      .select({
+        id: comments.id,
+        content: comments.content,
+        post_id: comments.post_id,
+        user_id: comments.user_id,
+        like_count: comments.like_count,
+        created_at: comments.created_at,
+        user_liked: sql<boolean>`COUNT(${likes.user_id}) > 0`,
+      })
       .from(comments)
-      .where(eq(comments.post_id, parseInt(post_id)));
+      .leftJoin(
+        likes,
+        and(eq(likes.comment_id, comments.id), eq(likes.user_id, user_id)),
+      )
+      .where(eq(comments.post_id, parseInt(post_id)))
+      .groupBy(comments.id)
+      .orderBy(desc(comments.like_count));
     return NextResponse.json({ result: res }, { status: 200 });
   } catch (e) {
     console.error(e);

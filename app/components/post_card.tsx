@@ -16,7 +16,6 @@ export default function PostCard({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         liked,
-        likeCount,
       }),
     });
     const data = await res.json();

@@ -45,12 +45,11 @@ CREATE TABLE IF NOT EXISTS comments (
 CREATE TABLE IF NOT EXISTS likes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    post_id INT,
-    comment_id INT,
+    post_id INT NOT NULL,
+    comment_id INT DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
-    UNIQUE KEY one_like_per_post (user_id, post_id),
-    UNIQUE KEY one_like_per_comment (user_id, comment_id),
+    UNIQUE KEY unique_like (user_id, post_id, comment_id),
     INDEX (post_id),
     INDEX (comment_id),
     FOREIGN KEY (user_id) REFERENCES users(id),

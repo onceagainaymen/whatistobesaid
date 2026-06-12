@@ -28,26 +28,25 @@ export default function PostPage({
     setLikeCount(data.likeCount);
   };
 
-  const handleCommentLike = (commentIndex: number) => {
-    // setComments((prev) =>
-    //   prev.map((c, i) => {
-    //     if (i === commentIndex) {
-    //       const newLiked = !c.liked;
-    //       return {
-    //         ...c,
-    //         liked: newLiked,
-    //         likeCount: newLiked ? c.likeCount + 1 : c.likeCount - 1,
-    //       };
-    //     }
-    //     return c;
-    //   }),
-    // );
+  const handleCommentLike = async (commentIndex: number) => {
+    const comment = comments[commentIndex];
+
+    await fetch(`/api/likes/${post.id}/${comment.id}`, {
+      method: "POST",
+    });
+
+    // Refetch comments
+    const res = await fetch(`/api/comments/${post.id}`);
+    const data = await res.json();
+    setComments(data.result);
   };
 
   async function fetchComments() {
     const res = await fetch(`/api/comments/${post.id}`);
     const data = await res.json();
     setComments(data.result);
+    console.log("like count: " + data.result[0].like_count);
+    console.log("user liked: " + data.result[0].user_liked);
   }
 
   const handleAddComment = async () => {
@@ -192,7 +191,7 @@ export default function PostPage({
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
-                    fill={c.liked ? "currentColor" : "none"}
+                    fill={c.user_liked ? "currentColor" : "none"}
                     stroke="currentColor"
                     className="w-3 h-3 text-black/60"
                   >

@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { likes } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { and } from "drizzle-orm";
+import { isNull } from "drizzle-orm";
 
 export async function GET(
   req: NextRequest,
@@ -34,7 +35,9 @@ export async function GET(
     const likes_res = await db
       .select()
       .from(likes)
-      .where(eq(likes.post_id, parseInt(post_id)));
+      .where(
+        and(eq(likes.post_id, parseInt(post_id)), isNull(likes.comment_id)),
+      );
     const number_of_likes = likes_res.length;
     const user_liked = userpostlike_res.length > 0;
     return NextResponse.json({ user_liked, number_of_likes }, { status: 200 });
@@ -52,7 +55,7 @@ export async function POST(
   { params }: { params: Promise<{ post_id: string }> },
 ) {
   try {
-    let { liked, likeCount } = await req.json();
+    let { liked } = await req.json();
     const { post_id } = await params;
     const token = req.cookies.get("session")?.value;
     let user_id = null;
@@ -80,16 +83,14 @@ export async function POST(
         post_id: parseInt(post_id),
         comment_id: null,
       });
-      likeCount++;
     } else {
       const res = await db
         .delete(likes)
         .where(
           and(eq(likes.user_id, user_id), eq(likes.post_id, parseInt(post_id))),
         );
-      likeCount--;
     }
-    return NextResponse.json({ ok: true, likeCount }, { status: 200 });
+    return NextResponse.json({ ok: true }, { status: 200 });
   } catch (e) {
     console.error(e);
     return NextResponse.json(
