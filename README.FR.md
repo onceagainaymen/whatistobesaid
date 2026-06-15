@@ -13,7 +13,7 @@ Une plateforme de blogging full-stack à l'esthétique brutaliste affirmée. Dé
 | Frontend & Backend | Next.js (pages React + routes API) |
 | Style | Tailwind CSS |
 | Base de données | MySQL (relationnelle, indexation full-text) |
-| ORM | Prisma |
+| ORM | DrizzleORM |
 | Analyse de sentiment | API NLP externe (Hugging Face / Google NL) |
 | Reverse proxy | Nginx (ports 80 & 443) |
 | Containerisation | Docker & Docker Compose |
@@ -74,7 +74,7 @@ npm run seed
 .
 ├── webapp/                # Application Next.js (pages, composants, routes API)
 ├── nginx/                 # Configuration du reverse proxy
-├── prisma/                # Schéma et migrations de la base de données
+├── DrizzleORM/                # Schéma et migrations de la base de données
 ├── docker-compose.yml
 └── Makefile
 ```
@@ -157,7 +157,7 @@ L'environnement de production reflète le setup local — le même `docker-compo
 ## Feuille de Route
 
 ### Phase 1 — Fondations *(Mois 1–2)*
-- [x] Échafaudage de projet (Next.js, Docker Compose, MySQL, Prisma)
+- [x] Échafaudage de projet (Next.js, Docker Compose, MySQL, DrizzleORM)
 - [x] Routage de base (`/`, `/auth`, `/profile`)
 - [x] Authentification : JWT + refresh tokens, rôles Auteur / Lecteur
 - [x] CRUD : posts et commentaires
@@ -186,7 +186,7 @@ L'environnement de production reflète le setup local — le même `docker-compo
 
 | Variable | Description |
 |---|---|
-| `DATABASE_URL` | Chaîne de connexion MySQL (Prisma) |
+| `DATABASE_URL` | Chaîne de connexion MySQL (DrizzleORM) |
 | `JWT_SECRET` | Clé secrète pour la signature des JWT |
 | `NLP_API_KEY` | Clé API pour le service d'analyse de sentiment |
 | `NEXT_PUBLIC_BASE_URL` | URL publique de base de l'application |

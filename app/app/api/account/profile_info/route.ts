@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
         email: email,
         bio: bio ? bio : "",
       })
-      .where(eq(id, users.id));
+      .where(eq(users.id, id));
     return NextResponse.json({ ok: true, status: 200 });
   } catch (e) {
     console.error(e);

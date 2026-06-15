@@ -13,7 +13,7 @@ A full-stack blogging platform with a bold brutaliste aesthetic. Built as a 6-mo
 | Frontend & Backend | Next.js (React pages + API routes) |
 | Styling | Tailwind CSS |
 | Database | MySQL (relational, full-text indexed) |
-| ORM | Prisma |
+| ORM | DrizzleORM |
 | Sentiment Analysis | External NLP API (Hugging Face / Google NL) |
 | Reverse Proxy | Nginx (ports 80 & 443) |
 | Containerization | Docker & Docker Compose |
@@ -74,7 +74,7 @@ npm run seed
 .
 ├── webapp/                # Next.js application (pages, components, API routes)
 ├── nginx/                 # Reverse proxy configuration
-├── prisma/                # Database schema and migrations
+├── database/                # Database schema and migrations
 ├── docker-compose.yml
 └── Makefile
 ```
@@ -157,7 +157,7 @@ The production environment mirrors local setup — the same `docker-compose.yml`
 ## Roadmap
 
 ### Phase 1 — Foundations *(Months 1–2)*
-- [x] Project scaffolding (Next.js, Docker Compose, MySQL, Prisma)
+- [x] Project scaffolding (Next.js, Docker Compose, MySQL, DrizzleORM)
 - [x] Basic page routing (`/`, `/auth`, `/profile`)
 - [x] Authentication: JWT + refresh tokens, Author / Reader roles
 - [x] CRUD: posts and comments
@@ -186,7 +186,7 @@ The production environment mirrors local setup — the same `docker-compose.yml`
 
 | Variable | Description |
 |---|---|
-| `DATABASE_URL` | MySQL connection string (Prisma) |
+| `DATABASE_URL` | MySQL connection string (DrizzleORM) |
 | `JWT_SECRET` | Secret key for JWT signing |
 | `NLP_API_KEY` | API key for the sentiment analysis service |
 | `NEXT_PUBLIC_BASE_URL` | Public base URL of the application |

@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     await db
       .update(users)
       .set({ password_hash: newPassword_hash })
-      .where(eq(id, id));
+      .where(eq(users.id, id));
     return NextResponse.json({ ok: 200 }, { status: 200 });
   } catch (e) {
     console.error(e);
