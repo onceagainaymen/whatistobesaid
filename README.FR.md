@@ -157,14 +157,14 @@ L'environnement de production reflète le setup local — le même `docker-compo
 ## Feuille de Route
 
 ### Phase 1 — Fondations *(Mois 1–2)*
-- [x] Scaffolding du projet (Next.js, Docker Compose, MySQL, Prisma)
+- [x] Échafaudage de projet (Next.js, Docker Compose, MySQL, Prisma)
 - [x] Routage de base (`/`, `/auth`, `/profile`)
-- [ ] Authentification : JWT + refresh tokens, rôles Auteur / Lecteur
-- [ ] CRUD : posts et commentaires
+- [x] Authentification : JWT + refresh tokens, rôles Auteur / Lecteur
+- [x] CRUD : posts et commentaires
 
 ### Phase 2 — Engagement *(Mois 2–3)*
-- [ ] Système de likes (posts et commentaires)
-- [ ] Upload d'images (stocké dans un Docker Volume)
+- [x] Système de likes (posts et commentaires)
+- [x] Upload d'images (stocké dans un Docker Volume)
 - [ ] Éditeur rich text
 - [ ] Recherche full-text (basique)
 

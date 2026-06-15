@@ -159,12 +159,12 @@ The production environment mirrors local setup — the same `docker-compose.yml`
 ### Phase 1 — Foundations *(Months 1–2)*
 - [x] Project scaffolding (Next.js, Docker Compose, MySQL, Prisma)
 - [x] Basic page routing (`/`, `/auth`, `/profile`)
-- [ ] Authentication: JWT + refresh tokens, Author / Reader roles
-- [ ] CRUD: posts and comments
+- [x] Authentication: JWT + refresh tokens, Author / Reader roles
+- [x] CRUD: posts and comments
 
 ### Phase 2 — Engagement *(Months 2–3)*
-- [ ] Like system (posts and comments)
-- [ ] Image upload (stored in Docker Volume)
+- [x] Like system (posts and comments)
+- [x] Image upload (stored in Docker Volume)
 - [ ] Rich text editor
 - [ ] Full-text search (basic)
 
