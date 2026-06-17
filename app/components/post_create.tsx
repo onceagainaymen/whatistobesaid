@@ -1,6 +1,10 @@
-"use client";
+import { useEffect, useState } from "react";
 
-import { useState } from "react";
+interface Draft {
+  title: String;
+  content: String;
+  image: String;
+}
 
 export default function PostCreate({ session }) {
   const [title, setTitle] = useState("");
@@ -9,6 +13,7 @@ export default function PostCreate({ session }) {
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [draft, setDraft] = useState<Draft | null>(null);
 
   function handleImage(e) {
     const file = e.target.files?.[0];
@@ -47,6 +52,48 @@ export default function PostCreate({ session }) {
 
     window.location.href = "/";
   }
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetch_draft = async function () {
+      try {
+        const res = await fetch(`/api/posts/${session.id}/draft/`);
+        const data = await res.json();
+        if (data.result[0] && isMounted) {
+          let d: Draft = {
+            title: data.result[0].title,
+            content: data.result[0].content || "",
+            image: data.result[0].image_path || "",
+          };
+          setDraft(d);
+          setTitle(d.title);
+          setContent(d.content);
+          setPreview(d.image);
+
+          let imageFile = null;
+          if (data.result[0].image_path) {
+            const blob = await (await fetch(data.result[0].image_path)).blob();
+            imageFile = new File(
+              [blob],
+              data.result[0].image_path.split("/").pop(),
+              { type: blob.type },
+            );
+          }
+          setImage(imageFile);
+
+          const res_d = await fetch(`/api/posts/${session.id}/draft/`, {
+            method: "DELETE",
+          });
+        }
+      } catch (e) {
+        console.error("failed to process draft:" + e);
+      }
+    };
+    fetch_draft();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div className="max-w-2xl mx-auto mt-10 px-4">
@@ -177,7 +224,7 @@ export default function PostCreate({ session }) {
             <div className="flex items-center gap-6">
               <button
                 onClick={() => handleSubmit("draft")}
-                disabled={loading || !title}
+                disabled={loading || (!title && !draft?.title)}
                 className="text-[11px] font-black tracking-[0.2em] uppercase text-black/30 hover:text-black border-b border-black/15 hover:border-black pb-0.5 transition-all duration-200 disabled:opacity-20"
                 style={{ fontFamily: "'Courier New', Courier, monospace" }}
               >
@@ -188,7 +235,7 @@ export default function PostCreate({ session }) {
 
               <button
                 onClick={() => handleSubmit("published")}
-                disabled={loading || !title || !content}
+                disabled={loading || (!title && !draft?.title)}
                 className="bg-black text-white text-[11px] font-black tracking-[0.2em] uppercase px-5 py-2 hover:bg-gray-400 hover:text-black transition-colors duration-150 disabled:opacity-20"
                 style={{ fontFamily: "'Courier New', Courier, monospace" }}
               >

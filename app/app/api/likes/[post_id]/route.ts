@@ -90,7 +90,12 @@ export async function POST(
           and(eq(likes.user_id, user_id), eq(likes.post_id, parseInt(post_id))),
         );
     }
-    return NextResponse.json({ ok: true }, { status: 200 });
+    const res = await db
+      .select()
+      .from(likes)
+      .where(eq(likes.post_id, parseInt(post_id)));
+    const likescount = res.length;
+    return NextResponse.json({ ok: true, likescount }, { status: 200 });
   } catch (e) {
     console.error(e);
     return NextResponse.json(

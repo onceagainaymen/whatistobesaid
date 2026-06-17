@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { posts } from "@/lib/db/schema";
 import { NextRequest, NextResponse } from "next/server";
+import { eq } from "drizzle-orm";
 import path from "path";
 import { writeFile, mkdir } from "fs/promises";
 
@@ -53,7 +54,10 @@ export async function POST(req: NextRequest) {
 // THE INDEX ALGORITHM
 export async function GET(req: NextRequest) {
   try {
-    const result = await db.select().from(posts);
+    const result = await db
+      .select()
+      .from(posts)
+      .where(eq(posts.status, "published"));
     return NextResponse.json({ result }, { status: 200 });
   } catch (e) {
     console.error(e);

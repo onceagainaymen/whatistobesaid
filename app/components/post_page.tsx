@@ -19,13 +19,12 @@ export default function PostPage({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         liked,
-        likeCount,
       }),
     });
     const data = await res.json();
     if (!res.ok) console.log(data.error);
     setLiked(!liked);
-    setLikeCount(data.likeCount);
+    setLikeCount(data.likescount);
   };
 
   const handleCommentLike = async (commentIndex: number) => {
@@ -45,8 +44,6 @@ export default function PostPage({
     const res = await fetch(`/api/comments/${post.id}`);
     const data = await res.json();
     setComments(data.result);
-    console.log("like count: " + data.result[0].like_count);
-    console.log("user liked: " + data.result[0].user_liked);
   }
 
   const handleAddComment = async () => {
