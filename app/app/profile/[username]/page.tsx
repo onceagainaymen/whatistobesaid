@@ -1,3 +1,4 @@
+import ErrorPage from "../../../components/error_page";
 import { eq } from "drizzle-orm";
 import * as schema from "@/lib/db";
 import { db } from "@/lib/db";
@@ -16,6 +17,8 @@ export default async function Profile({
     .select()
     .from(schema.users)
     .where(eq(schema.users.username, username));
+  if (thisUser.length === 0)
+    return <ErrorPage status={404} message="USER DOESN'T EXIST!" />;
   const res = await fetch(
     `${process.env.URL}:3000/api/posts/${thisUser[0].id}`,
     {

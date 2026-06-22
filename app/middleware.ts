@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 
-const PROTECTED = ["/profile", "/dashboard"];
+const PROTECTED = ["/profile", "/dashboard", "/account"];
 const AUTH_ONLY = ["/auth"];
 
 export async function middleware(req: NextRequest) {
@@ -21,5 +21,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/profile/:path*", "/dashboard/:path*", "/auth"],
+  matcher: ["/profile/:path*", "/dashboard/:path*", "/auth", "/account"],
 };
