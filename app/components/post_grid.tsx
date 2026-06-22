@@ -15,9 +15,14 @@ type Post = {
 type PostGridProps = {
   posts: Post[];
   onPostClick?: (post: Post) => void;
+  session: any;
 };
 
-export default function PostGrid({ posts, onPostClick }: PostGridProps) {
+export default function PostGrid({
+  posts,
+  onPostClick,
+  session,
+}: PostGridProps) {
   console.log("Lookie here");
   console.log(posts[0]);
   return (
@@ -28,7 +33,7 @@ export default function PostGrid({ posts, onPostClick }: PostGridProps) {
           className="mb-1 break-inside-avoid"
           onClick={() => onPostClick?.(post)}
         >
-          <PostCard post={post} />
+          <PostCard session={session} post={post} />
         </div>
       ))}
     </div>

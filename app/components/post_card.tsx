@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 export default function PostCard({
+  session,
   post,
   initiallikeCount = 0,
   initialLiked = false,
@@ -21,8 +22,23 @@ export default function PostCard({
     const data = await res.json();
     if (!res.ok) console.log(data.error);
     setLiked(!liked);
-    setLikeCount(data.likeCount);
+    setLikeCount(data.likescount);
   };
+
+  const handleDelete = async () => {
+    if (!confirm("Are you sure you want to delete this post?")) return;
+
+    const res = await fetch(`/api/posts/${post.id}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      window.location.reload();
+    } else {
+      console.log("Failed to delete post");
+    }
+  };
+
   useEffect(() => {
     (async () => {
       const res = await fetch(`/api/likes/${post.id}`);
@@ -31,6 +47,7 @@ export default function PostCard({
       setLiked(data.user_liked);
     })();
   }, []);
+
   return (
     <article className="post-card group relative w-full bg-white border-2 border-black">
       <div
@@ -66,30 +83,60 @@ export default function PostCard({
             </span>
           </div>
 
-          {/* Like Button */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              handleLike();
-            }}
-            className="flex items-center gap-1 transition-transform hover:scale-110"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill={liked ? "currentColor" : "none"}
-              stroke="currentColor"
-              className="w-5 h-5 text-black"
+          <div className="flex items-center gap-2">
+            {/* Like Button */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                handleLike();
+              }}
+              className="flex items-center gap-1 transition-transform hover:scale-110"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-              />
-            </svg>
-            <span className="text-xs font-bold text-black/70">{likeCount}</span>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill={liked ? "currentColor" : "none"}
+                stroke="currentColor"
+                className="w-5 h-5 text-black"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+              <span className="text-xs font-bold text-black/70">
+                {likeCount}
+              </span>
+            </button>
+
+            {/* Trash Bin Icon */}
+            {session.id === post.user_id && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleDelete();
+                }}
+                className="flex items-center gap-1 transition-transform hover:scale-110"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  className="w-5 h-5 text-red-500 hover:text-red-700"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Title */}

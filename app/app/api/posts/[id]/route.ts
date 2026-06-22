@@ -30,3 +30,20 @@ export async function GET(
     );
   }
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    const { id } = await params;
+    await db.delete(posts).where(eq(posts.id, parseInt(id)));
+    return NextResponse.json({ ok: true }, { status: 200 });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json(
+      { error: "Internal server error." },
+      { status: 500 },
+    );
+  }
+}

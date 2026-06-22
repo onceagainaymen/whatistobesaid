@@ -41,7 +41,7 @@ export default async function Profile({
           Posts by <span className="text-black/30">{thisUser[0].name}</span>
         </h1>
         <div className="w-full h-[2px] bg-black" />
-        {posts.length !== 0 && <PostGrid posts={posts} />}
+        {posts.length !== 0 && <PostGrid posts={posts} session={session} />}
       </div>
 
       {/* Sticky profile column */}

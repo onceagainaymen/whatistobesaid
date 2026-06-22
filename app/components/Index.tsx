@@ -92,7 +92,7 @@ export default function Index({ session }) {
                     setChosenPost(post);
                   }}
                 >
-                  <PostCard post={post} />
+                  <PostCard post={post} session={session} />
                 </div>
               ))}
             </div>
