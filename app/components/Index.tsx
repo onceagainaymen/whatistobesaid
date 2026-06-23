@@ -37,7 +37,9 @@ export default function Index({ session }) {
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             {page === E.POSTCREATE && <PostCreate session={session} />}
-            {page === E.POST && <PostPage post={chosenPost} />}
+            {page === E.POST && (
+              <PostPage session={session} post={chosenPost} />
+            )}
           </motion.div>
         </AnimatePresence>
       )}

@@ -21,7 +21,7 @@ export const comments = mysqlTable("comments", {
 export const likes = mysqlTable("likes", {
 	id: int("id").autoincrement().notNull(),
 	user_id: int("user_id").notNull().references(() => users.id),
-	post_id: int("post_id").references(() => posts.id),
+	post_id: int("post_id").notNull().references(() => posts.id),
 	comment_id: int("comment_id").references(() => comments.id),
 	created_at: timestamp("created_at", { mode: 'string' }).defaultNow(),
 },
@@ -30,8 +30,7 @@ export const likes = mysqlTable("likes", {
 		post_id: index("post_id").on(table.post_id),
 		comment_id: index("comment_id").on(table.comment_id),
 		likes_id: primaryKey({ columns: [table.id], name: "likes_id"}),
-		one_like_per_post: unique("one_like_per_post").on(table.user_id, table.post_id),
-		one_like_per_comment: unique("one_like_per_comment").on(table.user_id, table.comment_id),
+		unique_like: unique("unique_like").on(table.user_id, table.post_id, table.comment_id),
 	}
 });
 
