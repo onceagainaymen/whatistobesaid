@@ -87,6 +87,7 @@ export default function PostCard({
             {/* Like Button */}
             <button
               onClick={(e) => {
+                e.stopPropagation();
                 e.preventDefault();
                 handleLike();
               }}
@@ -116,6 +117,7 @@ export default function PostCard({
               <button
                 onClick={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                   handleDelete();
                 }}
                 className="flex items-center gap-1 transition-transform hover:scale-110"
