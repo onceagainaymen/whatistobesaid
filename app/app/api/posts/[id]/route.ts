@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { posts } from "@/lib/db/schema";
+import { posts, users } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 
 export async function GET(
@@ -16,8 +16,22 @@ export async function GET(
       );
     }
     const posts_res = await db
-      .select()
+      .select({
+        id: posts.id,
+        user_id: posts.user_id,
+        title: posts.title,
+        content: posts.content,
+        status: posts.status,
+        image_path: posts.image_path,
+        like_count: posts.like_count,
+        score: posts.score,
+        created_at: posts.created_at,
+        updated_at: posts.updated_at,
+        author_name: users.name,
+        author_username: users.username,
+      })
       .from(posts)
+      .leftJoin(users, eq(users.id, posts.user_id))
       .where(
         and(eq(posts.user_id, parseInt(id)), eq(posts.status, "published")),
       );

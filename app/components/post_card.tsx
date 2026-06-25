@@ -79,7 +79,10 @@ export default function PostCard({
           <div className="flex items-center gap-2">
             <span className="block w-3 h-3 bg-black" />
             <span className="text-[10px] font-black tracking-[0.2em] uppercase text-black/50">
-              {post.date}
+              {post.created_at.split(" ")[0]} |{" "}
+              <a href={`/profile/${post.author_username}`}>
+                @{post.author_name}
+              </a>
             </span>
           </div>
 

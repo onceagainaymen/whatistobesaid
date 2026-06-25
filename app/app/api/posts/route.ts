@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
-import { posts } from "@/lib/db/schema";
+import { posts, users } from "@/lib/db/schema";
 import { NextRequest, NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import path from "path";
 import { writeFile, mkdir } from "fs/promises";
 
@@ -55,9 +55,15 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const result = await db
-      .select()
+      .select({
+        ...posts,
+        author_name: users.name,
+        author_username: users.username,
+      })
       .from(posts)
+      .leftJoin(users, eq(users.id, posts.user_id))
       .where(eq(posts.status, "published"));
+
     return NextResponse.json({ result }, { status: 200 });
   } catch (e) {
     console.error(e);

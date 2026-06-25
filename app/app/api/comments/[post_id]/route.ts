@@ -1,6 +1,6 @@
 import { verifyToken } from "@/lib/auth";
 import { comments } from "@/lib/db/schema";
-import { likes } from "@/lib/db/schema";
+import { likes, posts, users } from "@/lib/db/schema";
 import { eq, and, count, desc, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
@@ -27,8 +27,11 @@ export async function GET(
         like_count: comments.like_count,
         created_at: comments.created_at,
         user_liked: sql<boolean>`COUNT(${likes.user_id}) > 0`,
+        author_name: users.name,
+        author_username: users.username,
       })
       .from(comments)
+      .leftJoin(users, eq(users.id, comments.user_id))
       .leftJoin(
         likes,
         and(eq(likes.comment_id, comments.id), eq(likes.user_id, user_id)),
