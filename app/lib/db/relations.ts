@@ -1,13 +1,13 @@
 import { relations } from "drizzle-orm/relations";
-import { users, comments, posts, likes } from "./schema";
+import { users, comments, posts, follows, likes } from "./schema";
 
 export const commentsRelations = relations(comments, ({one, many}) => ({
 	user: one(users, {
-		fields: [comments.user_id],
+		fields: [comments.userId],
 		references: [users.id]
 	}),
 	post: one(posts, {
-		fields: [comments.post_id],
+		fields: [comments.postId],
 		references: [posts.id]
 	}),
 	likes: many(likes),
@@ -15,6 +15,12 @@ export const commentsRelations = relations(comments, ({one, many}) => ({
 
 export const usersRelations = relations(users, ({many}) => ({
 	comments: many(comments),
+	follows_followerId: many(follows, {
+		relationName: "follows_followerId_users_id"
+	}),
+	follows_followingId: many(follows, {
+		relationName: "follows_followingId_users_id"
+	}),
 	likes: many(likes),
 	posts: many(posts),
 }));
@@ -23,22 +29,35 @@ export const postsRelations = relations(posts, ({one, many}) => ({
 	comments: many(comments),
 	likes: many(likes),
 	user: one(users, {
-		fields: [posts.user_id],
+		fields: [posts.userId],
 		references: [users.id]
+	}),
+}));
+
+export const followsRelations = relations(follows, ({one}) => ({
+	user_followerId: one(users, {
+		fields: [follows.followerId],
+		references: [users.id],
+		relationName: "follows_followerId_users_id"
+	}),
+	user_followingId: one(users, {
+		fields: [follows.followingId],
+		references: [users.id],
+		relationName: "follows_followingId_users_id"
 	}),
 }));
 
 export const likesRelations = relations(likes, ({one}) => ({
 	user: one(users, {
-		fields: [likes.user_id],
+		fields: [likes.userId],
 		references: [users.id]
 	}),
 	post: one(posts, {
-		fields: [likes.post_id],
+		fields: [likes.postId],
 		references: [posts.id]
 	}),
 	comment: one(comments, {
-		fields: [likes.comment_id],
+		fields: [likes.commentId],
 		references: [comments.id]
 	}),
 }));

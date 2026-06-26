@@ -2,71 +2,73 @@ import { mysqlTable, mysqlSchema, AnyMySqlColumn, index, foreignKey, primaryKey,
 import { sql } from "drizzle-orm"
 
 export const comments = mysqlTable("comments", {
-	id: int("id").autoincrement().notNull(),
-	user_id: int("user_id").notNull().references(() => users.id),
-	post_id: int("post_id").notNull().references(() => posts.id),
-	content: varchar("content", { length: 1500 }).notNull(),
-	like_count: int("like_count").default(0).notNull(),
-	score: double("score"),
-	created_at: timestamp("created_at", { mode: 'string' }).defaultNow(),
+	id: int().autoincrement().notNull(),
+	userId: int("user_id").notNull().references(() => users.id, { onDelete: "cascade" } ),
+	postId: int("post_id").notNull().references(() => posts.id, { onDelete: "cascade" } ),
+	content: varchar({ length: 1500 }).notNull(),
+	likeCount: int("like_count").default(0).notNull(),
+	score: double(),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
 },
-(table) => {
-	return {
-		post_id: index("post_id").on(table.post_id),
-		user_id: index("user_id").on(table.user_id),
-		comments_id: primaryKey({ columns: [table.id], name: "comments_id"}),
-	}
-});
+(table) => [
+	index("user_id").on(table.userId),
+	index("post_id").on(table.postId),
+	primaryKey({ columns: [table.id], name: "comments_id"}),
+]);
+
+export const follows = mysqlTable("follows", {
+	followerId: int("follower_id").notNull().references(() => users.id, { onDelete: "cascade" } ),
+	followingId: int("following_id").notNull().references(() => users.id, { onDelete: "cascade" } ),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
+},
+(table) => [
+	index("following_id").on(table.followingId),
+	primaryKey({ columns: [table.followerId, table.followingId], name: "follows_follower_id_following_id"}),
+]);
 
 export const likes = mysqlTable("likes", {
-	id: int("id").autoincrement().notNull(),
-	user_id: int("user_id").notNull().references(() => users.id),
-	post_id: int("post_id").notNull().references(() => posts.id),
-	comment_id: int("comment_id").references(() => comments.id),
-	created_at: timestamp("created_at", { mode: 'string' }).defaultNow(),
+	id: int().autoincrement().notNull(),
+	userId: int("user_id").notNull().references(() => users.id, { onDelete: "cascade" } ),
+	postId: int("post_id").notNull().references(() => posts.id, { onDelete: "cascade" } ),
+	commentId: int("comment_id").references(() => comments.id, { onDelete: "cascade" } ),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
 },
-(table) => {
-	return {
-		comment_id: index("comment_id").on(table.comment_id),
-		post_id: index("post_id").on(table.post_id),
-		likes_id: primaryKey({ columns: [table.id], name: "likes_id"}),
-		unique_like: unique("unique_like").on(table.user_id, table.post_id, table.comment_id),
-	}
-});
+(table) => [
+	index("post_id").on(table.postId),
+	index("comment_id").on(table.commentId),
+	primaryKey({ columns: [table.id], name: "likes_id"}),
+	unique("unique_like").on(table.userId, table.postId, table.commentId),
+]);
 
 export const posts = mysqlTable("posts", {
-	id: int("id").autoincrement().notNull(),
-	user_id: int("user_id").notNull().references(() => users.id),
-	title: varchar("title", { length: 200 }).notNull(),
-	content: text("content"),
-	status: mysqlEnum("status", ['draft','published']).default('draft').notNull(),
-	image_path: varchar("image_path", { length: 200 }),
-	like_count: int("like_count").default(0).notNull(),
-	score: double("score"),
-	created_at: timestamp("created_at", { mode: 'string' }).defaultNow(),
-	updated_at: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow(),
+	id: int().autoincrement().notNull(),
+	userId: int("user_id").notNull().references(() => users.id, { onDelete: "cascade" } ),
+	title: varchar({ length: 200 }).notNull(),
+	content: text(),
+	status: mysqlEnum(['draft','published']).default('draft').notNull(),
+	imagePath: varchar("image_path", { length: 200 }),
+	likeCount: int("like_count").default(0).notNull(),
+	score: double(),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().onUpdateNow(),
 },
-(table) => {
-	return {
-		user_id: index("user_id").on(table.user_id),
-		posts_id: primaryKey({ columns: [table.id], name: "posts_id"}),
-	}
-});
+(table) => [
+	index("user_id").on(table.userId),
+	primaryKey({ columns: [table.id], name: "posts_id"}),
+]);
 
 export const users = mysqlTable("users", {
-	id: int("id").autoincrement().notNull(),
-	username: varchar("username", { length: 100 }).notNull(),
-	name: varchar("name", { length: 100 }),
-	email: varchar("email", { length: 100 }).notNull(),
-	bio: varchar("bio", { length: 500 }),
-	avatar: varchar("avatar", { length: 500 }),
-	password_hash: varchar("password_hash", { length: 255 }).notNull(),
-	created_at: timestamp("created_at", { mode: 'string' }).defaultNow(),
+	id: int().autoincrement().notNull(),
+	username: varchar({ length: 100 }).notNull(),
+	name: varchar({ length: 100 }),
+	email: varchar({ length: 100 }).notNull(),
+	bio: varchar({ length: 500 }),
+	avatar: varchar({ length: 500 }),
+	passwordHash: varchar("password_hash", { length: 255 }).notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
 },
-(table) => {
-	return {
-		users_id: primaryKey({ columns: [table.id], name: "users_id"}),
-		email: unique("email").on(table.email),
-		username: unique("username").on(table.username),
-	}
-});
+(table) => [
+	primaryKey({ columns: [table.id], name: "users_id"}),
+	unique("username").on(table.username),
+	unique("email").on(table.email),
+]);
