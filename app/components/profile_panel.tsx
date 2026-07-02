@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import ButtonAlt from "./button_alt";
 import { BiSolidCog } from "react-icons/bi";
 
@@ -10,7 +13,47 @@ export default function ProfilePanel({
   avatar,
   session,
 }) {
+  const [following, setFollowing] = useState(false);
+  const [loading, setLoading] = useState(true);
   const personal = id === session.id ? true : false;
+
+  const handleFollow = async (following) => {
+    if (following) {
+      const res = await fetch(`/api/follow/${username}`, {
+        method: "POST",
+        body: JSON.stringify({ own_username: session.username }),
+      });
+      const data = await res.json();
+      setFollowing(data.following);
+    } else {
+      const res = await fetch(`/api/follow/${username}`, {
+        method: "DELETE",
+        body: JSON.stringify({ own_username: session.username }),
+      });
+      const data = await res.json();
+      setFollowing(data.following);
+    }
+  };
+  useEffect(() => {
+    async function checkFollowStatus() {
+      try {
+        const res = await fetch(
+          `/api/follow/${username}?own_username=${session.username}`,
+        );
+        const data = await res.json();
+        setFollowing(data.following);
+      } catch (error) {
+        console.error("Failed to check follow status:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (session.username) {
+      checkFollowStatus();
+    }
+  }, []);
+
   return (
     <div
       className="relative p-6"
@@ -90,9 +133,13 @@ export default function ProfilePanel({
         </div>
       </div>
       {!personal && (
-        <div className="mb-1 mt-3">
-          <ButtonAlt text="FOLLOW" />
-        </div>
+        <button onClick={handleFollow} className="w-full">
+          <div className="mb-1 mt-3 w-full">
+            <ButtonAlt
+              text={loading ? "..." : following ? "UNFOLLOW" : "FOLLOW"}
+            />
+          </div>
+        </button>
       )}
     </div>
   );

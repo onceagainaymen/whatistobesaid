@@ -3,11 +3,11 @@ import { users, comments, posts, follows, likes } from "./schema";
 
 export const commentsRelations = relations(comments, ({one, many}) => ({
 	user: one(users, {
-		fields: [comments.userId],
+		fields: [comments.user_id],
 		references: [users.id]
 	}),
 	post: one(posts, {
-		fields: [comments.postId],
+		fields: [comments.post_id],
 		references: [posts.id]
 	}),
 	likes: many(likes),
@@ -15,11 +15,11 @@ export const commentsRelations = relations(comments, ({one, many}) => ({
 
 export const usersRelations = relations(users, ({many}) => ({
 	comments: many(comments),
-	follows_followerId: many(follows, {
-		relationName: "follows_followerId_users_id"
+	follows_follower_id: many(follows, {
+		relationName: "follows_follower_id_users_id"
 	}),
-	follows_followingId: many(follows, {
-		relationName: "follows_followingId_users_id"
+	follows_following_id: many(follows, {
+		relationName: "follows_following_id_users_id"
 	}),
 	likes: many(likes),
 	posts: many(posts),
@@ -29,35 +29,35 @@ export const postsRelations = relations(posts, ({one, many}) => ({
 	comments: many(comments),
 	likes: many(likes),
 	user: one(users, {
-		fields: [posts.userId],
+		fields: [posts.user_id],
 		references: [users.id]
 	}),
 }));
 
 export const followsRelations = relations(follows, ({one}) => ({
-	user_followerId: one(users, {
-		fields: [follows.followerId],
+	user_follower_id: one(users, {
+		fields: [follows.follower_id],
 		references: [users.id],
-		relationName: "follows_followerId_users_id"
+		relationName: "follows_follower_id_users_id"
 	}),
-	user_followingId: one(users, {
-		fields: [follows.followingId],
+	user_following_id: one(users, {
+		fields: [follows.following_id],
 		references: [users.id],
-		relationName: "follows_followingId_users_id"
+		relationName: "follows_following_id_users_id"
 	}),
 }));
 
 export const likesRelations = relations(likes, ({one}) => ({
 	user: one(users, {
-		fields: [likes.userId],
+		fields: [likes.user_id],
 		references: [users.id]
 	}),
 	post: one(posts, {
-		fields: [likes.postId],
+		fields: [likes.post_id],
 		references: [posts.id]
 	}),
 	comment: one(comments, {
-		fields: [likes.commentId],
+		fields: [likes.comment_id],
 		references: [comments.id]
 	}),
 }));
