@@ -1,3 +1,4 @@
+import { pre } from "framer-motion/client";
 import { useEffect, useState } from "react";
 
 export default function PostCard({
@@ -166,14 +167,8 @@ export default function PostCard({
 
         {/* Body */}
         <div className="relative">
-          <p
-            className="text-[0.78rem] leading-relaxed text-black/80 break-words"
-            style={{ fontFamily: "'Courier New', Courier, monospace" }}
-          >
-            {preview}
-            {isLong && "…"}
-          </p>
-
+          <div dangerouslySetInnerHTML={{ __html: preview }} />
+          {isLong && "…"}
           {isLong && (
             <div
               className="

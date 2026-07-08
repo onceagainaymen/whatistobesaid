@@ -159,7 +159,7 @@ export default function PostPage({
             className="text-[0.85rem] leading-relaxed text-black/80 space-y-5"
             style={{ fontFamily: "'Courier New', Courier, monospace" }}
           >
-            <p>{post.content}</p>
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
           </div>
 
           <div className="w-full h-[2px] bg-black mt-10 mb-6" />

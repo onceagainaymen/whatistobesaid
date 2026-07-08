@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import Editor from "@/components/Editor";
 
 interface Draft {
-  title: String;
-  content: String;
-  image: String;
+  title: string;
+  content: string;
+  image: string;
 }
 
 export default function PostCreate({ session }) {
@@ -137,14 +138,7 @@ export default function PostCreate({ session }) {
               >
                 Content
               </label>
-              <textarea
-                rows={10}
-                placeholder="Say it."
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="bg-transparent outline-none resize-none text-sm leading-relaxed placeholder:text-black/20"
-                style={{ fontFamily: "'Courier New', Courier, monospace" }}
-              />
+              <Editor content={content} onChange={setContent} />
             </div>
 
             {/* Image upload */}
