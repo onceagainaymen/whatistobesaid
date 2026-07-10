@@ -18,6 +18,8 @@ export default function Index({ session }) {
   const [page, setPage] = useState(E.POST);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+
   useEffect(() => {
     (async () => {
       const res = await fetch("/api/posts/");
@@ -26,8 +28,40 @@ export default function Index({ session }) {
       setLoading(false);
     })();
   }, []);
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) return;
+
+    const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
+    const data = await res.json();
+    setPosts(data.results);
+  };
+
   return (
     <div style={{ paddingBottom: expanded ? "80vh" : "4rem" }}>
+      {/* Search Bar - Top Center */}
+      <div className="flex justify-center pt-6 pb-4">
+        <div className="relative w-full max-w-md px-4">
+          <div className="absolute inset-0 translate-x-[4px] translate-y-[4px] bg-black -z-10" />
+          <div className="flex border-2 border-black bg-white overflow-hidden">
+            <input
+              type="text"
+              placeholder="Search posts..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-1 px-4 py-2 text-sm bg-transparent outline-none placeholder:text-black/30"
+              style={{ fontFamily: "'Courier New', Courier, monospace" }}
+            />
+            <button
+              className="px-4 py-2 bg-black text-white text-[10px] font-black tracking-[0.2em] uppercase hover:bg-gray-400 hover:text-black transition-colors duration-150"
+              style={{ fontFamily: "'Courier New', Courier, monospace" }}
+              onClick={handleSearch}
+            >
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
+
       {!expanded && (
         <AnimatePresence>
           <motion.div
