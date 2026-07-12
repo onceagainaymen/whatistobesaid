@@ -165,8 +165,8 @@ The production environment mirrors local setup — the same `docker-compose.yml`
 ### Phase 2 — Engagement *(Months 2–3)*
 - [x] Like system (posts and comments)
 - [x] Image upload (stored in Docker Volume)
-- [ ] Rich text editor
-- [ ] Full-text search (basic)
+- [x] Rich text editor
+- [x] Full-text search (basic)
 
 ### Phase 3 — Sentiment & Analytics *(Months 3–4)*
 - [ ] NLP API integration on comment submit
