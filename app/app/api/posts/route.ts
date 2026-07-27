@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { posts, users } from "@/lib/db/schema";
 import { NextRequest, NextResponse } from "next/server";
-import { eq, and } from "drizzle-orm";
+import { eq, and, count, desc } from "drizzle-orm";
 import path from "path";
 import { writeFile, mkdir } from "fs/promises";
 
@@ -52,19 +52,42 @@ export async function POST(req: NextRequest) {
 }
 
 // THE INDEX ALGORITHM
+// app/api/posts/route.ts
 export async function GET(req: NextRequest) {
   try {
-    const result = await db
+    const page = parseInt(req.nextUrl.searchParams.get("page") || "1");
+    const limit = 20;
+    const offset = (page - 1) * limit;
+
+    const results = await db
       .select({
-        ...posts,
+        id: posts.id,
+        user_id: posts.user_id,
+        title: posts.title,
+        content: posts.content,
+        status: posts.status,
+        image_path: posts.image_path,
+        like_count: posts.like_count,
+        created_at: posts.created_at,
         author_name: users.name,
         author_username: users.username,
       })
       .from(posts)
       .leftJoin(users, eq(users.id, posts.user_id))
+      .where(eq(posts.status, "published"))
+      .orderBy(desc(posts.id))
+      .limit(limit)
+      .offset(offset);
+
+    const totalResult = await db
+      .select({ count: count() })
+      .from(posts)
       .where(eq(posts.status, "published"));
 
-    return NextResponse.json({ result }, { status: 200 });
+    const total = totalResult[0].count;
+    const hasMore = offset + limit < total;
+
+    return NextResponse.json({ posts: results, hasMore, page });
   } catch (e) {
     console.error(e);
     return NextResponse.json(
