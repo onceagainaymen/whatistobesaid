@@ -13,8 +13,12 @@ services:
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
       URL: ${URL}
+      HUGGINGFACE_API_TOKEN: ${HUGGINGFACE_API_TOKEN}
     depends_on:
       - database
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
 
   database:
     build:

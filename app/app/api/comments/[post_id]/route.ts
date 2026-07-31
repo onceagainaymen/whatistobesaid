@@ -4,6 +4,7 @@ import { likes, posts, users } from "@/lib/db/schema";
 import { eq, and, count, desc, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
+import { analyzeSentiment } from "@/lib/sentiment";
 
 export async function GET(
   req: NextRequest,
@@ -62,10 +63,13 @@ export async function POST(
       const payload = await verifyToken(token);
       user_id = payload?.id;
     }
+    const score = await analyzeSentiment(content);
+    console.log("HERE: " + score);
     const res = await db.insert(comments).values({
       user_id: user_id,
       post_id: parseInt(post_id),
       content: content,
+      score: score,
     });
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch (e) {
