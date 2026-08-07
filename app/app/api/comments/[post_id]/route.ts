@@ -64,13 +64,21 @@ export async function POST(
       user_id = payload?.id;
     }
     const score = await analyzeSentiment(content);
-    console.log("HERE: " + score);
     const res = await db.insert(comments).values({
       user_id: user_id,
       post_id: parseInt(post_id),
       content: content,
       score: score,
     });
+    // After saving comment with sentiment score
+    await db
+      .update(posts)
+      .set({
+        score: sql`
+      (SELECT AVG(${comments.score}) FROM ${comments} WHERE ${comments.post_id} = ${post_id})
+    `,
+      })
+      .where(eq(posts.id, post_id));
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch (e) {
     console.error(e);

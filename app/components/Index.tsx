@@ -20,18 +20,18 @@ export default function Index({ session }) {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [cursor, setCursor] = useState(null); // ← changed from currentPage
   const [searchQuery, setSearchQuery] = useState("");
 
   // Initial fetch
   useEffect(() => {
     async function fetchPosts() {
       setLoading(true);
-      const res = await fetch("/api/posts?page=1");
+      const res = await fetch("/api/posts");
       const data = await res.json();
       setPosts(data.posts || []);
-      setHasMore(data.hasMore);
-      setCurrentPage(data.page);
+      setCursor(data.nextCursor);
+      setHasMore(!!data.nextCursor);
       setLoading(false);
     }
     fetchPosts();
@@ -39,15 +39,15 @@ export default function Index({ session }) {
 
   // Load more
   const loadMore = async () => {
-    if (loadingMore || !hasMore) return;
+    if (loadingMore || !hasMore || !cursor) return;
 
     setLoadingMore(true);
-    const res = await fetch(`/api/posts?page=${currentPage + 1}`);
+    const res = await fetch(`/api/posts?cursor=${cursor}`);
     const data = await res.json();
 
     setPosts((prev) => [...prev, ...(data.posts || [])]);
-    setHasMore(data.hasMore);
-    setCurrentPage(data.page);
+    setCursor(data.nextCursor);
+    setHasMore(!!data.nextCursor);
     setLoadingMore(false);
   };
 
@@ -55,11 +55,11 @@ export default function Index({ session }) {
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
       setLoading(true);
-      const res = await fetch("/api/posts?page=1");
+      const res = await fetch("/api/posts");
       const data = await res.json();
       setPosts(data.posts || []);
-      setHasMore(data.hasMore);
-      setCurrentPage(data.page);
+      setCursor(data.nextCursor);
+      setHasMore(!!data.nextCursor);
       setLoading(false);
       return;
     }

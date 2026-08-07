@@ -67,4 +67,5 @@ CREATE TABLE IF NOT EXISTS follows (
     FOREIGN KEY (follower_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (following_id) REFERENCES users(id) ON DELETE CASCADE
 );
+CREATE INDEX idx_feed_posts ON posts(status, created_at DESC);
 "

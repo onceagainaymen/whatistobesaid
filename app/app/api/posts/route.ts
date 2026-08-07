@@ -1,7 +1,8 @@
 import { db } from "@/lib/db";
-import { posts, users } from "@/lib/db/schema";
+import { posts, users, follows } from "@/lib/db/schema"; // ← added follows
 import { NextRequest, NextResponse } from "next/server";
-import { eq, and, count, desc } from "drizzle-orm";
+import { eq, and, count, desc, sql } from "drizzle-orm"; // ← added sql
+import { verifyToken } from "@/lib/auth"; // ← added this
 import path from "path";
 import { writeFile, mkdir } from "fs/promises";
 
@@ -55,39 +56,113 @@ export async function POST(req: NextRequest) {
 // app/api/posts/route.ts
 export async function GET(req: NextRequest) {
   try {
-    const page = parseInt(req.nextUrl.searchParams.get("page") || "1");
+    // 1. Get logged-in user from session
+    const token = req.cookies.get("session")?.value;
+    let userId = null;
+    if (token) {
+      try {
+        const payload = await verifyToken(token);
+        userId = payload?.id || null;
+      } catch {
+        userId = null;
+      }
+    }
+
+    const cursor = req.nextUrl.searchParams.get("cursor");
     const limit = 20;
-    const offset = (page - 1) * limit;
+    let results;
 
-    const results = await db
-      .select({
-        id: posts.id,
-        user_id: posts.user_id,
-        title: posts.title,
-        content: posts.content,
-        status: posts.status,
-        image_path: posts.image_path,
-        like_count: posts.like_count,
-        created_at: posts.created_at,
-        author_name: users.name,
-        author_username: users.username,
-      })
-      .from(posts)
-      .leftJoin(users, eq(users.id, posts.user_id))
-      .where(eq(posts.status, "published"))
-      .orderBy(desc(posts.id))
-      .limit(limit)
-      .offset(offset);
+    // 2. Logged-in user: personalized feed
+    if (userId) {
+      const followed = await db
+        .select({ id: follows.following_id })
+        .from(follows)
+        .where(eq(follows.follower_id, userId));
 
-    const totalResult = await db
-      .select({ count: count() })
-      .from(posts)
-      .where(eq(posts.status, "published"));
+      const followedIds = followed.map((f) => f.id);
+      const hasFollowed = followedIds.length > 0;
 
-    const total = totalResult[0].count;
-    const hasMore = offset + limit < total;
+      let query = db
+        .select({
+          id: posts.id,
+          user_id: posts.user_id,
+          title: posts.title,
+          content: posts.content,
+          status: posts.status,
+          image_path: posts.image_path,
+          like_count: posts.like_count,
+          score: posts.score,
+          created_at: posts.created_at,
+          author_name: users.name,
+          author_username: users.username,
+        })
+        .from(posts)
+        .leftJoin(users, eq(users.id, posts.user_id))
+        .where(sql`${posts.status} = 'published'`);
 
-    return NextResponse.json({ posts: results, hasMore, page });
+      if (hasFollowed) {
+        query = query.where(sql`
+          ${posts.user_id} IN (${followedIds.join(",")}) OR
+          (${posts.like_count} + GREATEST(COALESCE(${posts.score}, 0), 0) * 10) > 5
+        `);
+      }
+
+      if (cursor) {
+        query = query.where(sql`${posts.id} < ${parseInt(cursor)}`);
+      }
+
+      results = await query
+        .orderBy(
+          sql`
+          (UNIX_TIMESTAMP(${posts.created_at}) / 3600) * 0.5 +
+          (${posts.like_count} + GREATEST(COALESCE(${posts.score}, 0), 0) * 10) * 0.3 +
+          ${hasFollowed ? sql`CASE WHEN ${posts.user_id} IN (${followedIds.join(",")}) THEN 5 ELSE 0 END` : sql`0`}
+          DESC
+        `,
+        )
+        .limit(limit + 1);
+    }
+    // 3. Guest: popular posts
+    else {
+      let query = db
+        .select({
+          id: posts.id,
+          user_id: posts.user_id,
+          title: posts.title,
+          content: posts.content,
+          status: posts.status,
+          image_path: posts.image_path,
+          like_count: posts.like_count,
+          score: posts.score,
+          created_at: posts.created_at,
+          author_name: users.name,
+          author_username: users.username,
+        })
+        .from(posts)
+        .leftJoin(users, eq(users.id, posts.user_id))
+        .where(sql`${posts.status} = 'published'`);
+
+      if (cursor) {
+        query = query.where(sql`${posts.id} < ${parseInt(cursor)}`);
+      }
+
+      results = await query
+        .orderBy(
+          sql`
+          (UNIX_TIMESTAMP(${posts.created_at}) / 3600) * 0.5 +
+          (${posts.like_count} + GREATEST(COALESCE(${posts.score}, 0), 0) * 10) * 0.3
+          DESC
+        `,
+        )
+        .limit(limit + 1);
+    }
+
+    // 4. Pagination
+    const hasMore = results.length > limit;
+    const postsData = hasMore ? results.slice(0, -1) : results;
+    const nextCursor = hasMore ? postsData[postsData.length - 1].id : null;
+
+    return NextResponse.json({ posts: postsData, nextCursor });
   } catch (e) {
     console.error(e);
     return NextResponse.json(
