@@ -169,10 +169,10 @@ The production environment mirrors local setup — the same `docker-compose.yml`
 - [x] Full-text search (basic)
 
 ### Phase 3 — Sentiment & Analytics *(Months 3–4)*
-- [ ] NLP API integration on comment submit
-- [ ] Sentiment score storage
+- [x] NLP API integration on comment submit
+- [x] Sentiment score storage
 - [ ] Author analytics dashboard (sentiment trends, likes × sentiment, controversial posts)
-- [ ] Full-text search (advanced — MySQL native indexing)
+- [x] Full-text search (advanced — MySQL native indexing)
 
 ### Phase 4 — Finalization & Deployment *(Months 4–5)*
 - [ ] Seed script (Faker.js)

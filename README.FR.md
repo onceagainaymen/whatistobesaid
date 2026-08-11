@@ -165,14 +165,14 @@ L'environnement de production reflète le setup local — le même `docker-compo
 ### Phase 2 — Engagement *(Mois 2–3)*
 - [x] Système de likes (posts et commentaires)
 - [x] Upload d'images (stocké dans un Docker Volume)
-- [ ] Éditeur rich text
-- [ ] Recherche full-text (basique)
+- [x] Éditeur rich text
+- [x] Recherche full-text (basique)
 
 ### Phase 3 — Sentiment & Analytiques *(Mois 3–4)*
-- [ ] Intégration API NLP à la soumission d'un commentaire
-- [ ] Stockage des scores de sentiment
+- [x] Intégration API NLP à la soumission d'un commentaire
+- [x] Stockage des scores de sentiment
 - [ ] Tableau de bord auteur (tendances sentiment, croisement likes × sentiment, posts controversés)
-- [ ] Recherche full-text (avancée — indexation native MySQL)
+- [x] Recherche full-text (avancée — indexation native MySQL)
 
 ### Phase 4 — Finalisation & Déploiement *(Mois 4–5)*
 - [ ] Seed script (Faker.js)
