@@ -1,8 +1,8 @@
 // app/api/posts/search/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { posts } from "@/lib/db/schema";
-import { like, or, eq, desc, and } from "drizzle-orm";
+import { posts, users } from "@/lib/db/schema";
+import { sql, eq, and } from "drizzle-orm";
 
 export async function GET(req: NextRequest) {
   try {
@@ -13,18 +13,30 @@ export async function GET(req: NextRequest) {
     }
 
     const results = await db
-      .select()
+      .select({
+        id: posts.id,
+        user_id: posts.user_id,
+        title: posts.title,
+        content: posts.content,
+        status: posts.status,
+        image_path: posts.image_path,
+        like_count: posts.like_count,
+        score: posts.score,
+        created_at: posts.created_at,
+        author_name: users.name,
+        author_username: users.username,
+      })
       .from(posts)
+      .leftJoin(users, eq(users.id, posts.user_id))
       .where(
         and(
-          or(
-            like(posts.title, `%${query}%`),
-            like(posts.content, `%${query}%`),
-          ),
+          sql`MATCH(${posts.title}, ${posts.content}) AGAINST(${query} IN BOOLEAN MODE)`,
           eq(posts.status, "published"),
         ),
       )
-      .orderBy(desc(posts.created_at));
+      .orderBy(
+        sql`MATCH(${posts.title}, ${posts.content}) AGAINST(${query} IN BOOLEAN MODE) DESC`,
+      );
 
     return NextResponse.json({ results }, { status: 200 });
   } catch (e) {

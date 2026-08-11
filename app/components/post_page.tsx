@@ -100,7 +100,10 @@ export default function PostPage({
             <div className="flex items-center gap-2">
               <span className="block w-3 h-3 bg-black" />
               <span className="text-[10px] font-black tracking-[0.2em] uppercase text-black/50">
-                {post.created_at} | @{post.author_username}
+                {post.created_at} |{" "}
+                <a href={`/profile/${post.author_username}`}>
+                  {post.author_name} - @{post.author_username}
+                </a>
               </span>
             </div>
 
@@ -187,7 +190,7 @@ export default function PostPage({
               <div key={i} className="border-t-2 border-black py-4">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-[11px] font-black uppercase tracking-tight">
-                    Author id: {c.author_name}
+                    Author: {c.author_name} - @{c.author_username}
                   </span>
                   <span className="text-[9px] text-black/40 font-black tracking-widest uppercase">
                     {c.created_at}

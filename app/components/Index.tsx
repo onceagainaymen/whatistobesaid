@@ -67,7 +67,7 @@ export default function Index({ session }) {
     setLoading(true);
     const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
     const data = await res.json();
-    setPosts(data.posts || []);
+    setPosts(data.results || []);
     setHasMore(false);
     setLoading(false);
   };

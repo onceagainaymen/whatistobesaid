@@ -28,6 +28,8 @@ CREATE TABLE IF NOT EXISTS posts (
 
 );
 
+CREATE FULLTEXT INDEX ft_search ON posts(title, content);
+
 CREATE TABLE IF NOT EXISTS comments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
