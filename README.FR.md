@@ -171,7 +171,7 @@ L'environnement de production reflète le setup local — le même `docker-compo
 ### Phase 3 — Sentiment & Analytiques *(Mois 3–4)*
 - [x] Intégration API NLP à la soumission d'un commentaire
 - [x] Stockage des scores de sentiment
-- [ ] Tableau de bord auteur (tendances sentiment, croisement likes × sentiment, posts controversés)
+- [x] Tableau de bord auteur (tendances sentiment, croisement likes × sentiment, posts controversés)
 - [x] Recherche full-text (avancée — indexation native MySQL)
 
 ### Phase 4 — Finalisation & Déploiement *(Mois 4–5)*

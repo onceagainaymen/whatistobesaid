@@ -171,7 +171,7 @@ The production environment mirrors local setup — the same `docker-compose.yml`
 ### Phase 3 — Sentiment & Analytics *(Months 3–4)*
 - [x] NLP API integration on comment submit
 - [x] Sentiment score storage
-- [ ] Author analytics dashboard (sentiment trends, likes × sentiment, controversial posts)
+- [x] Author analytics dashboard (sentiment trends, likes × sentiment, controversial posts)
 - [x] Full-text search (advanced — MySQL native indexing)
 
 ### Phase 4 — Finalization & Deployment *(Months 4–5)*

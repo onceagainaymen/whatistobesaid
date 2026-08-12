@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import ProfilePanel from "../../../components/profile_panel";
 import PostGrid from "../../../components/post_grid";
 import { getSession } from "@/lib/auth";
+import AnalyticsDashboard from "../../../components/analytics_dashboard";
 
 export default async function Profile({
   params,
@@ -41,6 +42,10 @@ export default async function Profile({
           Posts by <span className="text-black/30">{thisUser[0].name}</span>
         </h1>
         <div className="w-full h-[2px] bg-black" />
+
+        {/* Analytics moved here - right after the header */}
+        <AnalyticsDashboard userId={thisUser[0].id} />
+
         {posts.length !== 0 && <PostGrid posts={posts} session={session} />}
       </div>
 
