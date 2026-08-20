@@ -23,8 +23,6 @@ export default function PostGrid({
   onPostClick,
   session,
 }: PostGridProps) {
-  console.log("Lookie here");
-  console.log(posts[0]);
   return (
     <div className="columns-2 sm:columns-3 gap-1 w-full">
       {posts.map((post) => (

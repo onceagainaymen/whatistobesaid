@@ -44,7 +44,9 @@ export default async function Profile({
         <div className="w-full h-[2px] bg-black" />
 
         {/* Analytics moved here - right after the header */}
-        <AnalyticsDashboard userId={thisUser[0].id} />
+        {thisUser[0].id === session?.id && (
+          <AnalyticsDashboard userId={thisUser[0].id} />
+        )}
 
         {posts.length !== 0 && <PostGrid posts={posts} session={session} />}
       </div>

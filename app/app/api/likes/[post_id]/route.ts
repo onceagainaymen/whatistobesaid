@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { likes } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
-import { and } from "drizzle-orm";
+import { likes, posts } from "@/lib/db/schema";
+import { eq, and, sql } from "drizzle-orm";
 import { isNull } from "drizzle-orm";
 
 export async function GET(
@@ -83,12 +82,20 @@ export async function POST(
         post_id: parseInt(post_id),
         comment_id: null,
       });
+      await db
+        .update(posts)
+        .set({ like_count: sql`${posts.like_count} + 1` })
+        .where(eq(posts.id, parseInt(post_id)));
     } else {
       const res = await db
         .delete(likes)
         .where(
           and(eq(likes.user_id, user_id), eq(likes.post_id, parseInt(post_id))),
         );
+      await db
+        .update(posts)
+        .set({ like_count: sql`${posts.like_count} - 1` })
+        .where(eq(posts.id, parseInt(post_id)));
     }
     const res = await db
       .select()
