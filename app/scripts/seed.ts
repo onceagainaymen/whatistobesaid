@@ -58,9 +58,7 @@ async function createUsers() {
       .username({ firstName, lastName })
       .toLowerCase()
       .replace(/[^a-z0-9]/g, "");
-    const email = faker.internet
-      .email({ firstName, lastName })
-      .toLowerCase();
+    const email = faker.internet.email({ firstName, lastName }).toLowerCase();
 
     const fakeUser = {
       username,
@@ -135,9 +133,6 @@ async function createPosts(users: any[]) {
       title,
       content,
       status,
-      image_path: faker.helpers.maybe(() => faker.image.url(), {
-        probability: 0.3,
-      }),
       like_count: likeCount,
       score: sentiment,
       created_at: createdAt,
@@ -224,8 +219,8 @@ async function createLikes(users: any[], posts: any[], commentsList: any[]) {
           and(
             eq(likes.user_id, user.id),
             eq(likes.post_id, post.id),
-            eq(likes.comment_id, null)
-          )
+            eq(likes.comment_id, null),
+          ),
         )
         .limit(1);
 
@@ -259,10 +254,7 @@ async function createLikes(users: any[], posts: any[], commentsList: any[]) {
         .select()
         .from(likes)
         .where(
-          and(
-            eq(likes.user_id, user.id),
-            eq(likes.comment_id, comment.id)
-          )
+          and(eq(likes.user_id, user.id), eq(likes.comment_id, comment.id)),
         )
         .limit(1);
 
@@ -303,8 +295,8 @@ async function createFollows(users: any[]) {
       .where(
         and(
           eq(follows.follower_id, follower.id),
-          eq(follows.following_id, following.id)
-        )
+          eq(follows.following_id, following.id),
+        ),
       )
       .limit(1);
 

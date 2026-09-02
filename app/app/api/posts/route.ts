@@ -1,10 +1,10 @@
 import { db } from "@/lib/db";
 import { posts, users, follows } from "@/lib/db/schema"; // ← added follows
 import { NextRequest, NextResponse } from "next/server";
-import { eq, and, count, desc, sql } from "drizzle-orm"; // ← added sql
+import { eq, sql } from "drizzle-orm"; // ← added sql
 import { verifyToken } from "@/lib/auth"; // ← added this
 import path from "path";
-import { writeFile, mkdir } from "fs/promises";
+import { writeFile, mkdir, chmod } from "fs/promises";
 
 export async function POST(req: NextRequest) {
   try {
@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
         recursive: true,
       });
       await writeFile(filepath, buffer);
+      await chmod(filepath, 0o666); // -rw-rw-rw-
       imagePath = `/uploads/${filename}`;
     }
 

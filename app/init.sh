@@ -24,5 +24,8 @@ else
   echo "⏭️  Already initialized — skipping introspect & seed"
 fi
 
+mkdir -p /app/public/uploads
+chmod -R 777 /app/public/uploads
+
 echo "🚀 Starting Next.js..."
 exec npm run dev
