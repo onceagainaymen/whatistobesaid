@@ -24,6 +24,7 @@ down:
 
 free:
 	$(COMPOSE) $(FREE)
+	rm -rf ./app/.db_initialized
 	rm -rf ./app/public/uploads/*
 
 restart: free build
