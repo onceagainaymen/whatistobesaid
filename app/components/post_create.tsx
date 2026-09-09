@@ -97,148 +97,197 @@ export default function PostCreate({ session }) {
   }, []);
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 px-4">
-      <div className="relative p-2">
-        <div className="absolute inset-0 translate-x-[6px] translate-y-[6px] bg-black -z-10" />
-        <div className="border-2 border-black bg-white">
-          {/* Header */}
-          <div className="border-b-2 border-black px-6 py-4 flex items-center gap-3">
-            <span className="block w-3 h-3 bg-black" />
-            <span
-              className="text-[10px] font-black tracking-[0.2em] uppercase"
-              style={{ fontFamily: "'Courier New', Courier, monospace" }}
-            >
-              New Post
-            </span>
-          </div>
+    <div className="max-w-4xl mx-auto mt-10 px-4">
+      <div className="flex gap-6 items-start">
+        {/* Main form */}
+        <div className="flex-1 min-w-0">
+          <div className="relative p-2">
+            <div className="absolute inset-0 translate-x-[6px] translate-y-[6px] bg-black -z-10" />
+            <div className="border-2 border-black bg-white">
+              {/* Header */}
+              <div className="border-b-2 border-black px-6 py-4 flex items-center gap-3">
+                <span className="block w-3 h-3 bg-black" />
+                <span
+                  className="text-[10px] font-black tracking-[0.2em] uppercase"
+                  style={{ fontFamily: "'Courier New', Courier, monospace" }}
+                >
+                  New Post
+                </span>
+              </div>
 
-          {/* Fields */}
-          <div className="p-6 flex flex-col divide-y divide-black border-b-2 border-black">
-            <div className="flex flex-col gap-1 pb-6">
-              <label
-                className="text-[9px] tracking-[0.2em] uppercase text-black/40"
-                style={{ fontFamily: "'Courier New', Courier, monospace" }}
-              >
-                Title
-              </label>
-              <input
-                type="text"
-                placeholder="What is to be said?"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="bg-transparent outline-none text-2xl font-black uppercase tracking-tight placeholder:text-black/20"
-                style={{ fontFamily: "'Arial Black', Impact, sans-serif" }}
-              />
-            </div>
-
-            <div className="flex flex-col gap-1 py-6">
-              <label
-                className="text-[9px] tracking-[0.2em] uppercase text-black/40"
-                style={{ fontFamily: "'Courier New', Courier, monospace" }}
-              >
-                Content
-              </label>
-              <Editor content={content} onChange={setContent} />
-            </div>
-
-            {/* Image upload */}
-            <div className="flex flex-col gap-3 pt-6">
-              <label
-                className="text-[9px] tracking-[0.2em] uppercase text-black/40"
-                style={{ fontFamily: "'Courier New', Courier, monospace" }}
-              >
-                Image
-              </label>
-
-              {preview ? (
-                <div className="relative border-2 border-black">
-                  <img
-                    src={preview}
-                    alt="preview"
-                    className="w-full object-cover max-h-64"
-                  />
-                  <button
-                    onClick={removeImage}
-                    className="absolute top-2 right-2 bg-black text-white text-[9px] font-black tracking-[0.2em] uppercase px-3 py-1 hover:bg-red-700 transition-colors duration-150"
+              {/* Fields */}
+              <div className="p-6 flex flex-col divide-y divide-black border-b-2 border-black">
+                <div className="flex flex-col gap-1 pb-6">
+                  <label
+                    className="text-[9px] tracking-[0.2em] uppercase text-black/40"
                     style={{ fontFamily: "'Courier New', Courier, monospace" }}
                   >
-                    Remove ✕
+                    Title
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="What is to be said?"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="bg-transparent outline-none text-2xl font-black uppercase tracking-tight placeholder:text-black/20"
+                    style={{ fontFamily: "'Arial Black', Impact, sans-serif" }}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1 py-6">
+                  <label
+                    className="text-[9px] tracking-[0.2em] uppercase text-black/40"
+                    style={{ fontFamily: "'Courier New', Courier, monospace" }}
+                  >
+                    Content
+                  </label>
+                  <Editor content={content} onChange={setContent} />
+                </div>
+
+                {/* Image upload */}
+                <div className="flex flex-col gap-3 pt-6">
+                  <label
+                    className="text-[9px] tracking-[0.2em] uppercase text-black/40"
+                    style={{ fontFamily: "'Courier New', Courier, monospace" }}
+                  >
+                    Image
+                  </label>
+
+                  {preview ? (
+                    <div className="relative border-2 border-black">
+                      <img
+                        src={preview}
+                        alt="preview"
+                        className="w-full object-cover max-h-64"
+                      />
+                      <button
+                        onClick={removeImage}
+                        className="absolute top-2 right-2 bg-black text-white text-[9px] font-black tracking-[0.2em] uppercase px-3 py-1 hover:bg-red-700 transition-colors duration-150"
+                        style={{
+                          fontFamily: "'Courier New', Courier, monospace",
+                        }}
+                      >
+                        Remove ✕
+                      </button>
+                    </div>
+                  ) : (
+                    <label className="cursor-pointer">
+                      <div className="border-2 border-dashed border-black/30 hover:border-black flex flex-col items-center justify-center py-10 gap-2 transition-colors duration-150">
+                        <span
+                          className="text-3xl font-black text-black/20"
+                          style={{
+                            fontFamily: "'Arial Black', Impact, sans-serif",
+                          }}
+                        >
+                          +
+                        </span>
+                        <span
+                          className="text-[9px] tracking-[0.2em] uppercase text-black/30"
+                          style={{
+                            fontFamily: "'Courier New', Courier, monospace",
+                          }}
+                        >
+                          Click to upload
+                        </span>
+                      </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImage}
+                        className="hidden"
+                      />
+                    </label>
+                  )}
+                </div>
+              </div>
+
+              {/* Error */}
+              {error && (
+                <p
+                  className="px-6 pt-4 text-xs text-red-700"
+                  style={{ fontFamily: "'Courier New', Courier, monospace" }}
+                >
+                  {error}
+                </p>
+              )}
+
+              {/* Actions */}
+              <div className="px-6 py-4 flex items-center justify-between">
+                <span
+                  className="text-[9px] tracking-[0.2em] uppercase text-black/30"
+                  style={{ fontFamily: "'Courier New', Courier, monospace" }}
+                >
+                  {content.length} / 1500
+                </span>
+
+                <div className="flex items-center gap-6">
+                  <button
+                    onClick={() => handleSubmit("draft")}
+                    disabled={loading || (!title && !draft?.title)}
+                    className="text-[11px] font-black tracking-[0.2em] uppercase text-black/30 hover:text-black border-b border-black/15 hover:border-black pb-0.5 transition-all duration-200 disabled:opacity-20"
+                    style={{ fontFamily: "'Courier New', Courier, monospace" }}
+                  >
+                    Save Draft
+                  </button>
+
+                  <span className="text-black/20">|</span>
+
+                  <button
+                    onClick={() => handleSubmit("published")}
+                    disabled={loading || (!title && !draft?.title)}
+                    className="bg-black text-white text-[11px] font-black tracking-[0.2em] uppercase px-5 py-2 hover:bg-gray-400 hover:text-black transition-colors duration-150 disabled:opacity-20"
+                    style={{ fontFamily: "'Courier New', Courier, monospace" }}
+                  >
+                    {loading ? "..." : "Publish →"}
                   </button>
                 </div>
-              ) : (
-                <label className="cursor-pointer">
-                  <div className="border-2 border-dashed border-black/30 hover:border-black flex flex-col items-center justify-center py-10 gap-2 transition-colors duration-150">
-                    <span
-                      className="text-3xl font-black text-black/20"
-                      style={{
-                        fontFamily: "'Arial Black', Impact, sans-serif",
-                      }}
-                    >
-                      +
-                    </span>
-                    <span
-                      className="text-[9px] tracking-[0.2em] uppercase text-black/30"
-                      style={{
-                        fontFamily: "'Courier New', Courier, monospace",
-                      }}
-                    >
-                      Click to upload
-                    </span>
-                  </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImage}
-                    className="hidden"
-                  />
-                </label>
-              )}
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* Error */}
-          {error && (
-            <p
-              className="px-6 pt-4 text-xs text-red-700"
-              style={{ fontFamily: "'Courier New', Courier, monospace" }}
-            >
-              {error}
-            </p>
-          )}
-
-          {/* Actions */}
-          <div className="px-6 py-4 flex items-center justify-between">
-            <span
-              className="text-[9px] tracking-[0.2em] uppercase text-black/30"
-              style={{ fontFamily: "'Courier New', Courier, monospace" }}
-            >
-              {content.length} / 1500
-            </span>
-
-            <div className="flex items-center gap-6">
-              <button
-                onClick={() => handleSubmit("draft")}
-                disabled={loading || (!title && !draft?.title)}
-                className="text-[11px] font-black tracking-[0.2em] uppercase text-black/30 hover:text-black border-b border-black/15 hover:border-black pb-0.5 transition-all duration-200 disabled:opacity-20"
-                style={{ fontFamily: "'Courier New', Courier, monospace" }}
-              >
-                Save Draft
-              </button>
-
-              <span className="text-black/20">|</span>
-
-              <button
-                onClick={() => handleSubmit("published")}
-                disabled={loading || (!title && !draft?.title)}
-                className="bg-black text-white text-[11px] font-black tracking-[0.2em] uppercase px-5 py-2 hover:bg-gray-400 hover:text-black transition-colors duration-150 disabled:opacity-20"
-                style={{ fontFamily: "'Courier New', Courier, monospace" }}
-              >
-                {loading ? "..." : "Publish →"}
-              </button>
+        {/* Keyboard shortcuts sidebar */}
+        <div className="w-48 shrink-0 mt-2">
+          <div className="text-[8px] font-black tracking-[0.2em] uppercase text-black/20 mb-2">
+            Shortcuts
+          </div>
+          <div className="space-y-1 text-[10px] font-mono text-black/30">
+            <div className="flex justify-between">
+              <span>Ctrl+B</span>
+              <span>bold</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Ctrl+I</span>
+              <span>italic</span>
+            </div>
+            <div className="flex justify-between">
+              <span># + space</span>
+              <span>h1</span>
+            </div>
+            <div className="flex justify-between">
+              <span>## + space</span>
+              <span>h2</span>
+            </div>
+            <div className="flex justify-between">
+              <span>### + space</span>
+              <span>h3</span>
+            </div>
+            <div className="flex justify-between">
+              <span>&gt; + space</span>
+              <span>blockquote</span>
+            </div>
+            <div className="flex justify-between">
+              <span>- + space</span>
+              <span>bullet list</span>
+            </div>
+            <div className="flex justify-between">
+              <span>1. + space</span>
+              <span>numbered list</span>
             </div>
           </div>
         </div>
       </div>
+      <div>hello</div>
     </div>
   );
 }
