@@ -24,7 +24,7 @@ export default function PostGrid({
   session,
 }: PostGridProps) {
   return (
-    <div className="columns-2 sm:columns-3 gap-1 w-full">
+    <div className="columns-1 sm:columns-3 gap-1 w-full">
       {posts.map((post) => (
         <div
           key={post.id}

@@ -1,9 +1,9 @@
 export default function LoadingComp() {
   // Generate consistent heights that will be the same on server and client
   const heights = [140, 180, 220, 160, 200, 250, 170, 190, 230];
-  
+
   return (
-    <div className="columns-2 sm:columns-3 gap-1 w-full">
+    <div className="columns-1 sm:columns-3 gap-1 w-full">
       {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
         <div key={i} className="mb-1 break-inside-avoid">
           <div className="relative w-full bg-white border-2 border-black">

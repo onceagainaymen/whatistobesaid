@@ -1,3 +1,4 @@
+// profile/[username]/page.tsx
 import ErrorPage from "../../../components/error_page";
 import { eq } from "drizzle-orm";
 import * as schema from "@/lib/db";
@@ -30,29 +31,11 @@ export default async function Profile({
   const posts = data.result;
   return (
     <div
-      className="grid grid-cols-3 gap-4 mt-6 mx-4"
+      className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6 mx-4"
       style={{ fontFamily: "'Courier New', Courier, monospace" }}
     >
-      {/* Posts column */}
-      <div className="col-span-2 flex flex-col gap-4">
-        <h1
-          className="text-4xl font-black uppercase tracking-tight"
-          style={{ fontFamily: "'Arial Black', Impact, sans-serif" }}
-        >
-          Posts by <span className="text-black/30">{thisUser[0].name}</span>
-        </h1>
-        <div className="w-full h-[2px] bg-black" />
-
-        {/* Analytics moved here - right after the header */}
-        {thisUser[0].id === session?.id && (
-          <AnalyticsDashboard userId={thisUser[0].id} />
-        )}
-
-        {posts.length !== 0 && <PostGrid posts={posts} session={session} />}
-      </div>
-
       {/* Sticky profile column */}
-      <div className="sticky top-6 self-start">
+      <div className="lg:sticky lg:top-6 lg:self-start order-first lg:order-last lg:col-start-3">
         <ProfilePanel
           id={thisUser[0].id}
           username={thisUser[0].username}
@@ -61,6 +44,23 @@ export default async function Profile({
           postCount={posts.length}
           session={session}
         />
+      </div>
+
+      {/* Posts column */}
+      <div className="lg:col-span-2 lg:row-start-1 lg:col-start-1 flex flex-col gap-4">
+        <h1
+          className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight"
+          style={{ fontFamily: "'Arial Black', Impact, sans-serif" }}
+        >
+          Posts by <span className="text-black/30">{thisUser[0].name}</span>
+        </h1>
+        <div className="w-full h-[2px] bg-black" />
+
+        {thisUser[0].id === session?.id && (
+          <AnalyticsDashboard userId={thisUser[0].id} />
+        )}
+
+        {posts.length !== 0 && <PostGrid posts={posts} session={session} />}
       </div>
     </div>
   );

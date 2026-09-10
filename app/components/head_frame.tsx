@@ -14,29 +14,29 @@ export default async function HeadFrame() {
     redirect("/");
   }
   return (
-    <header className="border-b-2 h-24 flex items-center px-4">
-      <div className="flex-1">
-        <h1 className={`${melloida.className} text-4xl font-bold`}>
+    <header className="border-b-2 h-16 sm:h-24 flex items-center px-3 sm:px-4">
+      <div className="flex-1 min-w-0">
+        <h1
+          className={`${melloida.className} text-xl sm:text-2xl lg:text-4xl font-bold truncate`}
+        >
           <a href="/">
             WhatIsToBe<span className="text-gray-400">Said</span>
           </a>
         </h1>
       </div>
 
-      <div className="flex items-center gap-8 mr-3 ml-auto">
+      <div className="flex items-center gap-2 sm:gap-8 ml-auto">
         {session === null && (
-          <>
-            <a href="/auth">
-              <ButtonSubmit text="signing"></ButtonSubmit>
-            </a>
-          </>
+          <a href="/auth">
+            <ButtonSubmit text="signing"></ButtonSubmit>
+          </a>
         )}
         {session !== null && (
           <>
             <a href={`/profile/${session.username}`}>
               <ButtonSubmit text="profile"></ButtonSubmit>
             </a>
-            <p>|</p>
+            <p className="hidden sm:block">|</p>
             <form action={handleLogout}>
               <button type="submit">
                 <ButtonDanger text="log out"></ButtonDanger>

@@ -97,15 +97,15 @@ export default function PostCreate({ session }) {
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 px-4">
-      <div className="flex gap-6 items-start">
+    <div className="max-w-4xl mx-auto mt-6 sm:mt-10 px-3 sm:px-4">
+      <div className="flex flex-col lg:flex-row gap-6 items-start">
         {/* Main form */}
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 w-full">
           <div className="relative p-2">
             <div className="absolute inset-0 translate-x-[6px] translate-y-[6px] bg-black -z-10" />
             <div className="border-2 border-black bg-white">
               {/* Header */}
-              <div className="border-b-2 border-black px-6 py-4 flex items-center gap-3">
+              <div className="border-b-2 border-black px-4 sm:px-6 py-4 flex items-center gap-3">
                 <span className="block w-3 h-3 bg-black" />
                 <span
                   className="text-[10px] font-black tracking-[0.2em] uppercase"
@@ -116,7 +116,7 @@ export default function PostCreate({ session }) {
               </div>
 
               {/* Fields */}
-              <div className="p-6 flex flex-col divide-y divide-black border-b-2 border-black">
+              <div className="p-4 sm:p-6 flex flex-col divide-y divide-black border-b-2 border-black">
                 <div className="flex flex-col gap-1 pb-6">
                   <label
                     className="text-[9px] tracking-[0.2em] uppercase text-black/40"
@@ -129,7 +129,7 @@ export default function PostCreate({ session }) {
                     placeholder="What is to be said?"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="bg-transparent outline-none text-2xl font-black uppercase tracking-tight placeholder:text-black/20"
+                    className="bg-transparent outline-none text-xl sm:text-2xl font-black uppercase tracking-tight placeholder:text-black/20"
                     style={{ fontFamily: "'Arial Black', Impact, sans-serif" }}
                   />
                 </div>
@@ -204,7 +204,7 @@ export default function PostCreate({ session }) {
               {/* Error */}
               {error && (
                 <p
-                  className="px-6 pt-4 text-xs text-red-700"
+                  className="px-4 sm:px-6 pt-4 text-xs text-red-700"
                   style={{ fontFamily: "'Courier New', Courier, monospace" }}
                 >
                   {error}
@@ -212,7 +212,7 @@ export default function PostCreate({ session }) {
               )}
 
               {/* Actions */}
-              <div className="px-6 py-4 flex items-center justify-between">
+              <div className="px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-3">
                 <span
                   className="text-[9px] tracking-[0.2em] uppercase text-black/30"
                   style={{ fontFamily: "'Courier New', Courier, monospace" }}
@@ -220,7 +220,7 @@ export default function PostCreate({ session }) {
                   {content.length} / 1500
                 </span>
 
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-4 sm:gap-6">
                   <button
                     onClick={() => handleSubmit("draft")}
                     disabled={loading || (!title && !draft?.title)}
@@ -247,7 +247,7 @@ export default function PostCreate({ session }) {
         </div>
 
         {/* Keyboard shortcuts sidebar */}
-        <div className="w-48 shrink-0 mt-2">
+        <div className="hidden lg:block w-48 shrink-0 mt-2">
           <div className="text-[8px] font-black tracking-[0.2em] uppercase text-black/20 mb-2">
             Shortcuts
           </div>
@@ -287,7 +287,6 @@ export default function PostCreate({ session }) {
           </div>
         </div>
       </div>
-      <div>hello</div>
     </div>
   );
 }

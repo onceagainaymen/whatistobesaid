@@ -35,7 +35,6 @@ export default function PostPage({
       method: "POST",
     });
 
-    // Refetch comments
     const res = await fetch(`/api/comments/${post.id}`);
     const data = await res.json();
     setComments(data.result);
@@ -92,14 +91,13 @@ export default function PostPage({
   }, []);
   return (
     <main className="min-h-screen bg-white">
-      <div className="flex items-start max-w-6xl mx-auto px-6 py-12 gap-8">
+      <div className="flex flex-col lg:flex-row items-start max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 gap-8">
         {/* Left: Post content */}
-        <div className="flex-1 min-w-0">
-          {/* Meta row with like button */}
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <span className="block w-3 h-3 bg-black" />
-              <span className="text-[10px] font-black tracking-[0.2em] uppercase text-black/50">
+        <div className="flex-1 min-w-0 w-full">
+          <div className="flex items-center justify-between mb-4 gap-2">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="block w-3 h-3 bg-black shrink-0" />
+              <span className="text-[10px] font-black tracking-[0.2em] uppercase text-black/50 truncate">
                 {post.created_at} |{" "}
                 <a href={`/profile/${post.author_username}`}>
                   {post.author_name} - @{post.author_username}
@@ -107,10 +105,9 @@ export default function PostPage({
               </span>
             </div>
 
-            {/* Like Button */}
             <button
               onClick={handleLike}
-              className="flex items-center gap-1 transition-transform hover:scale-110"
+              className="flex items-center gap-1 transition-transform hover:scale-110 shrink-0"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +129,6 @@ export default function PostPage({
             </button>
           </div>
 
-          {/* Title */}
           <h1
             className="text-[clamp(2rem,8vw,3.5rem)] font-black uppercase tracking-tight leading-[1.0] mb-6"
             style={{
@@ -145,7 +141,6 @@ export default function PostPage({
 
           <div className="w-full h-[2px] bg-black mb-6" />
 
-          {/* Hero image */}
           {post.image_path && (
             <figure className="border-2 border-black mb-8 relative">
               <div className="absolute inset-0 translate-x-[6px] translate-y-[6px] bg-black -z-10" />
@@ -157,7 +152,6 @@ export default function PostPage({
             </figure>
           )}
 
-          {/* Body */}
           <div
             className="text-[0.85rem] leading-relaxed text-black/80 space-y-5"
             style={{ fontFamily: "'Courier New', Courier, monospace" }}
@@ -167,7 +161,6 @@ export default function PostPage({
 
           <div className="w-full h-[2px] bg-black mt-10 mb-6" />
 
-          {/* Footer */}
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-black tracking-[0.2em] uppercase text-black/50">
               End of post
@@ -177,7 +170,7 @@ export default function PostPage({
         {/* end left col */}
 
         {/* Right: Comments */}
-        <div className="w-80 shrink-0 border-l-2 border-black pl-8 pt-12">
+        <div className="w-full lg:w-80 shrink-0 border-t-2 lg:border-t-0 lg:border-l-2 border-black pt-8 lg:pt-12 lg:pl-8">
           <div className="flex items-center gap-2 mb-6">
             <span className="block w-3 h-3 bg-black" />
             <span className="text-[10px] font-black tracking-[0.2em] uppercase">
@@ -188,11 +181,11 @@ export default function PostPage({
           <div className="space-y-0">
             {comments.map((c, i) => (
               <div key={i} className="border-t-2 border-black py-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[11px] font-black uppercase tracking-tight">
+                <div className="flex items-center justify-between mb-2 gap-2">
+                  <span className="text-[11px] font-black uppercase tracking-tight truncate">
                     Author: {c.author_name} - @{c.author_username}
                   </span>
-                  <span className="text-[9px] text-black/40 font-black tracking-widest uppercase">
+                  <span className="text-[9px] text-black/40 font-black tracking-widest uppercase shrink-0">
                     {c.created_at}
                   </span>
                 </div>
@@ -202,7 +195,6 @@ export default function PostPage({
                 >
                   {c.content}
                 </p>
-                {/* Comment Like Button */}
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleCommentLike(i)}
@@ -227,7 +219,6 @@ export default function PostPage({
                     </span>
                   </button>
 
-                  {/* Trash Bin Icon for comment */}
                   {c.user_id === session.id && (
                     <button
                       onClick={() => handleCommentDelete(i)}
@@ -254,7 +245,6 @@ export default function PostPage({
             ))}
           </div>
 
-          {/* Comment input */}
           <div className="mt-6 relative">
             <div className="absolute inset-0 translate-x-[4px] translate-y-[4px] bg-black -z-10" />
             <div className="border-2 border-black">

@@ -1,3 +1,4 @@
+// sign_in_comp.tsx
 "use client";
 
 import { useState } from "react";
@@ -23,8 +24,10 @@ export default function SignInComp({ onSubmit }: { onSubmit: () => void }) {
   }
 
   return (
-    <div className="w-full px-32 mb-3 font-mono">
-      <h1 className="text-4xl font-bold tracking-tight mb-12">Log in</h1>
+    <div className="w-full max-w-md lg:max-w-none px-6 sm:px-12 lg:px-32 mb-3 font-mono">
+      <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-8 sm:mb-12">
+        Log in
+      </h1>
 
       <div className="divide-y divide-black border-y border-black">
         {[
@@ -41,7 +44,7 @@ export default function SignInComp({ onSubmit }: { onSubmit: () => void }) {
             placeholder: "Your password",
           },
         ].map(({ label, key, type, placeholder }) => (
-          <div key={key} className="py-8 flex flex-col gap-1">
+          <div key={key} className="py-6 sm:py-8 flex flex-col gap-1">
             <label className="text-[9px] tracking-[0.2em] uppercase text-neutral-400">
               {label}
             </label>
@@ -50,7 +53,7 @@ export default function SignInComp({ onSubmit }: { onSubmit: () => void }) {
               placeholder={placeholder}
               value={form[key as keyof typeof form]}
               onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-              className="bg-transparent outline-none text-sm placeholder:text-neutral-300"
+              className="bg-transparent outline-none text-sm placeholder:text-neutral-300 w-full"
             />
           </div>
         ))}
@@ -58,12 +61,12 @@ export default function SignInComp({ onSubmit }: { onSubmit: () => void }) {
 
       {error && <p className="text-red-600 text-xs mt-3">{error}</p>}
 
-      <div className="mt-4 flex items-center gap-4">
+      <div className="mt-4 flex flex-wrap items-center gap-3 sm:gap-4">
         <span onClick={handleSubmit}>
           <ButtonAlt text={loading ? "..." : "submit"} />
         </span>
         <button className="cursor-pointer" onClick={onSubmit}>
-          <p>don't have an account?</p>
+          <p className="text-sm">don't have an account?</p>
         </button>
       </div>
     </div>

@@ -56,7 +56,7 @@ export default function ProfilePanel({
 
   return (
     <div
-      className="relative p-6"
+      className="relative p-3 sm:p-6 max-w-md mx-auto lg:max-w-none lg:mx-0"
       style={{ fontFamily: "'Courier New', Courier, monospace" }}
     >
       <div
@@ -69,12 +69,12 @@ export default function ProfilePanel({
             <img
               src={avatar}
               alt={username}
-              className="w-full h-48 object-cover block"
+              className="w-full h-32 sm:h-48 object-cover block"
             />
           ) : (
-            <div className="w-full h-48 bg-gray-300 flex items-center justify-center">
+            <div className="w-full h-32 sm:h-48 bg-gray-300 flex items-center justify-center">
               <span
-                className="text-6xl font-black uppercase"
+                className="text-4xl sm:text-6xl font-black uppercase"
                 style={{ fontFamily: "'Arial Black', Impact, sans-serif" }}
               >
                 {username.charAt(0)}
@@ -83,9 +83,9 @@ export default function ProfilePanel({
           )}
         </div>
 
-        <div className="p-4">
+        <div className="p-3 sm:p-4">
           {/* Username */}
-          <p className="text-xl tracking-widest text-black/50 mb-4">
+          <p className="text-lg sm:text-xl tracking-widest text-black/50 mb-4 truncate">
             @{username}
           </p>
           <div className="w-full h-[2px] bg-black mb-4" />
@@ -107,10 +107,10 @@ export default function ProfilePanel({
 
           {/* Post count */}
           {postCount !== undefined && (
-            <div className="flex items-baseline justify-between w-full">
+            <div className="flex items-baseline justify-between w-full gap-2">
               <div className="flex items-baseline gap-2">
                 <span
-                  className="text-4xl font-black"
+                  className="text-3xl sm:text-4xl font-black"
                   style={{ fontFamily: "'Arial Black', Impact, sans-serif" }}
                 >
                   {postCount}
@@ -121,7 +121,7 @@ export default function ProfilePanel({
                 </span>
               </div>
               {personal && (
-                <a className="border border-black/20 px-2 py-1" href="/account">
+                <a className="border border-black/20 px-2 py-1 shrink-0" href="/account">
                   <span className="flex items-center gap-2">
                     Account
                     <BiSolidCog size={20} />
