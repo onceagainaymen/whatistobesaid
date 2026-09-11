@@ -175,8 +175,8 @@ The production environment mirrors local setup — the same `docker-compose.yml`
 - [x] Full-text search (advanced — MySQL native indexing)
 
 ### Phase 4 — Finalization & Deployment *(Months 4–5)*
-- [ ] Seed script (Faker.js)
-- [ ] UI polish
+- [x] Seed script (Faker.js)
+- [x] UI polish
 - [ ] DigitalOcean deployment + Nginx + domain + HTTPS
 - [ ] Architecture Decision Records (ADR)
 

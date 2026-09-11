@@ -175,8 +175,8 @@ L'environnement de production reflète le setup local — le même `docker-compo
 - [x] Recherche full-text (avancée — indexation native MySQL)
 
 ### Phase 4 — Finalisation & Déploiement *(Mois 4–5)*
-- [ ] Seed script (Faker.js)
-- [ ] Polish UI
+- [x] Seed script (Faker.js)
+- [x] Polish UI
 - [ ] Déploiement DigitalOcean + Nginx + domaine + HTTPS
 - [ ] Architecture Decision Records (ADR)
 
