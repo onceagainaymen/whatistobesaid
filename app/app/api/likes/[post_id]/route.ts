@@ -50,7 +50,7 @@ export async function GET(
 }
 
 export async function POST(
-  req: NextResponse,
+  req: NextRequest,
   { params }: { params: Promise<{ post_id: string }> },
 ) {
   try {
