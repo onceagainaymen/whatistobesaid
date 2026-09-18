@@ -12,9 +12,6 @@ done
 echo "✅ Database ready"
 
 if [ ! -f "$MARKER_FILE" ]; then
-  echo "🔍 First run — introspecting database schema..."
-  npx drizzle-kit introspect
-
   echo "🌱 Seeding database..."
   npx tsx scripts/seed.ts
 
