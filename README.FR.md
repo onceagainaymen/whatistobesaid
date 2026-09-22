@@ -2,7 +2,7 @@
 
 Une plateforme de blogging full-stack à l'esthétique brutaliste affirmée. Développée dans le cadre d'un stage de 6 mois, elle va au-delà du simple CRUD en intégrant une analyse de sentiment sur les commentaires, un tableau de bord analytique pour les auteurs, et une recherche full-text — déployée sur un domaine personnel en HTTPS.
 
-> **En ligne :** `https://<votre-domaine>.me` *(à venir — Phase 4)*
+> **En ligne :** `https://whatistobesaid.me`
 
 ---
 
@@ -17,7 +17,7 @@ Une plateforme de blogging full-stack à l'esthétique brutaliste affirmée. Dé
 | Analyse de sentiment | API NLP externe (Hugging Face / Google NL) |
 | Reverse proxy | Nginx (ports 80 & 443) |
 | Containerisation | Docker & Docker Compose |
-| Hébergement | DigitalOcean Droplet (Ubuntu) |
+| Hébergement | Oracle Cloud Instance (Ubuntu) |
 | Domaine | Namecheap `.me` |
 | SSL | Let's Encrypt / certificat Namecheap |
 
@@ -39,12 +39,7 @@ make build
 
 L'application sera accessible à `http://localhost`.
 
-Pour peupler la base de données avec des données de démonstration réalistes (Faker.js) :
-
-```bash
-# à venir — Phase 4
-npm run seed
-```
+Les données de test sont créées lors de la compilation de développement.
 
 ---
 
@@ -61,10 +56,9 @@ npm run seed
 
 | Route | Description |
 |---|---|
-| `/` | Page hero | En cours |
-| `/?index=true` | Index des posts (remplace être connecté) | En cours |
-| `/auth` | Page d'authentification — connexion ou inscription | En cours |
-| `/profile` | Page de profil utilisateur | En cours |
+| `/` | Page hero / Feed | En cours |
+| `/auth` | Page d'authentification — connexion ou inscription |
+| `/profile` | Page de profil utilisateur |
 
 ---
 
@@ -150,8 +144,6 @@ L'environnement de production reflète le setup local — le même `docker-compo
 7. Pointer le domaine Namecheap (enregistrement DNS A) vers l'IP publique du Droplet
 8. Activer HTTPS — redirection HTTP → HTTPS
 
-> Coût d'hébergement : ~6 $/mois (Droplet), entièrement couvert par les 200 $ de crédits DigitalOcean du GitHub Student Developer Pack. Domaine gratuit 1 an via Namecheap + Student Pack.
-
 ---
 
 ## Feuille de Route
@@ -177,8 +169,7 @@ L'environnement de production reflète le setup local — le même `docker-compo
 ### Phase 4 — Finalisation & Déploiement *(Mois 4–5)*
 - [x] Seed script (Faker.js)
 - [x] Polish UI
-- [ ] Déploiement DigitalOcean + Nginx + domaine + HTTPS
-- [ ] Architecture Decision Records (ADR)
+- [x] Déploiement DigitalOcean + Nginx + domaine + HTTPS
 
 ---
 
@@ -202,4 +193,3 @@ Voir `.env.example` pour un modèle complet.
 - `docker-compose.yml` permettant un démarrage en une commande en local
 - Ce README
 - Seed script documenté pour des données de démonstration réalistes
-- Architecture Decision Records (ADR)

@@ -2,7 +2,7 @@
 
 A full-stack blogging platform with a bold brutaliste aesthetic. Built as a 6-month internship project, it goes beyond standard CRUD to include sentiment analysis on comments, an author analytics dashboard, and full-text search — deployable on a personal domain with HTTPS.
 
-> **Live:** `https://<your-domain>.me` *(coming — Phase 4)*
+> **Live:** `https://whatistobesaid.me`
 
 ---
 
@@ -17,7 +17,7 @@ A full-stack blogging platform with a bold brutaliste aesthetic. Built as a 6-mo
 | Sentiment Analysis | External NLP API (Hugging Face / Google NL) |
 | Reverse Proxy | Nginx (ports 80 & 443) |
 | Containerization | Docker & Docker Compose |
-| Hosting | DigitalOcean Droplet (Ubuntu) |
+| Hosting | Oracle Cloud Instance (Ubuntu) |
 | Domain | Namecheap `.me` |
 | SSL | Let's Encrypt / Namecheap certificate |
 
@@ -39,12 +39,7 @@ make build
 
 The application will be available at `http://localhost`.
 
-To seed the database with realistic demo data (Faker.js):
-
-```bash
-# coming — Phase 4
-npm run seed
-```
+Seed data is created on the dev build.
 
 ---
 
@@ -61,10 +56,9 @@ npm run seed
 
 | Route | Description |
 |---|---|
-| `/` | Hero page | In progress |
-| `/?index=true` | Posts index (replaces being logged in) | In progress |
-| `/auth` | Authentication page — sign in or sign up | In progress |
-| `/profile` | User profile page | In progress |
+| `/` | Hero page / Feed | In progress |
+| `/auth` | Authentication page — sign in or sign up |
+| `/profile` | User profile page |
 
 ---
 
@@ -141,7 +135,7 @@ The production environment mirrors local setup — the same `docker-compose.yml`
 
 **Steps (manual, one-time):**
 
-1. Provision a DigitalOcean Ubuntu Droplet and configure SSH access
+1. Provision a Oracle Cloud Ubuntu Instance and configure SSH access
 2. Install Docker and Docker Compose on the server
 3. Clone this repository onto the Droplet
 4. Configure environment variables via `.env` on the server
@@ -149,8 +143,6 @@ The production environment mirrors local setup — the same `docker-compose.yml`
 6. Configure Nginx as a reverse proxy
 7. Point the Namecheap domain DNS (A record) to the Droplet's public IP
 8. Activate HTTPS — redirect HTTP → HTTPS
-
-> Hosting costs: ~$6/month (Droplet), fully covered by the $200 DigitalOcean credit from the GitHub Student Developer Pack. Domain free for 1 year via Namecheap + Student Pack.
 
 ---
 
@@ -177,8 +169,7 @@ The production environment mirrors local setup — the same `docker-compose.yml`
 ### Phase 4 — Finalization & Deployment *(Months 4–5)*
 - [x] Seed script (Faker.js)
 - [x] UI polish
-- [ ] DigitalOcean deployment + Nginx + domain + HTTPS
-- [ ] Architecture Decision Records (ADR)
+- [x] DigitalOcean deployment + Nginx + domain + HTTPS
 
 ---
 
@@ -202,5 +193,4 @@ See `.env.example` for a full template.
 - `docker-compose.yml` enabling one-command local startup
 - This README
 - Documented seed script for realistic demo data
-- Architecture Decision Records (ADR)
 - A french version of the README.md (README.FR.md)
